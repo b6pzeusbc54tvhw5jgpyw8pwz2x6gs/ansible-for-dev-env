@@ -1,0 +1,5 @@
+site.retry
+
+.galaxy_roles/
+
+hosts.yml

@@ -1,0 +1,25 @@
+
+
+- name: ensure ppa:aacebedo/fasd is present
+  become: true
+  apt_repository:
+    repo: ppa:aacebedo/fasd
+    state: present
+- name: ensure apt packages is at the latest version
+  become: true
+  apt:
+    name:
+    - direnv
+    - jq
+    - curl
+    - python-pkg-resources
+    - gcc
+    - thefuck
+    - silversearcher-ag
+    - fasd
+    state: latest
+
+- name: Install a ripgrep
+  become: true
+  apt:
+    deb: https://github.com/BurntSushi/ripgrep/releases/download/0.9.0/ripgrep_0.9.0_amd64.deb

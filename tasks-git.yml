@@ -1,0 +1,48 @@
+
+- debug:
+    msg: task-git.yml
+
+- name: ensure git packages is at the latest version
+  become: true
+  apt:
+    name:
+    - git
+    - git-extras
+    state: latest
+
+- name: touch .gitconfig
+  file:
+    path: "{{ ansible_env.HOME }}/.gitconfig"
+    state: touch
+    mode: 0644
+  # https://github.com/ansible/ansible-modules-core/issues/170
+  register: touch_log
+  changed_when: touch_log.diff.before.state != "file" or touch_log.diff.before.mode is defined
+
+- name: copying .gitconfig
+  copy:
+    src: .gitconfig
+    dest: ~/.gitconfig.before_insert_by_ansible
+    mode: 0644
+  register: gitconfig_copy_result
+
+- name: copying .gitconfig
+  copy:
+    src: .gitconfig
+    dest: ~/.gitconfig
+    mode: 0644
+  when: gitconfig_copy_result.changed
+
+# marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다
+- blockinfile:
+    marker: "  # {mark} ANSIBLE MANAGED BLOCK FOR GIT_HIDE_DIRTY"
+    path: ~/.gitconfig
+    content: "  hide-dirty = 1"
+  when: ansible_env.USER == "vagrant"
+
+- blockinfile:
+    marker: "  # {mark} ANSIBLE MANAGED BLOCK FOR GIT_HIDE_DIRTY"
+    path: ~/.gitconfig
+    content: "  hide-dirty = 0"
+  when: ansible_env.USER != "vagrant"
+

@@ -1,0 +1,77 @@
+
+- import_role:
+    name: viasite-ansible.zsh
+  become: true
+  vars:
+    zsh_autosuggestions_bind_key: "^ "
+    zsh_antigen_theme: robbyrussell
+    zsh_antigen_bundles_extras:
+    - vi-mode
+    zsh_antigen_bundles:
+    - docker-compose
+    - { name: command-not-found, when: "{{ ansible_os_family != 'Darwin' }}" } # too slow on OSX
+    - { name: brew, command: brew }
+    - { name: docker, command: docker }
+    - { name: docker-compose, command: docker-compose }
+    - git-extras
+    - gnu-utils
+    - { name: pip, command: pip }
+    - python
+    - { name: tmux, command: tmux }
+    - { name: go, command: go }
+    - { name: rake, command: rake }
+    - { name: symfony2, command: symfony }
+    - { name: systemd, command: systemctl }
+    - { name: vagrant, command: vagrant }
+    - { name: viasite/server-scripts, command: dbdump }
+    - { name: viasite-ansible/zsh-ansible-server, command: ansible-deploy }
+    - zsh_reload
+
+    # on zsh 4.3.10 autosuggestions breaks multiline commands with \
+    - { name: zsh-users/zsh-autosuggestions, when: "{{ zsh_version | default(false) | version_compare('5.0', '>=') }}" }
+    - popstas/zsh-command-time
+    - { name: unixorn/autoupdate-antigen.zshplugin, when: "{{ zsh_update_interval > 0 }}" }
+    - urbainvaes/fzf-marks # replaces jump plugin, mark, jump and Ctrl+G
+    - "{{ fzf_widgets }}"
+    # must be last, don't work on zsh < 4.3.17
+    #- { name: zsh-users/zsh-syntax-highlighting, when: "{{ zsh_version | default(false) | version_compare('4.3.17', '>=') }}" }
+    - { name: zdharma/fast-syntax-highlighting, when: "{{ zsh_version | default(false) | version_compare('4.3.17', '>=') }}" }
+ 
+- blockinfile:
+    marker_begin: |-
+      ####################################################################
+      # fasd
+      ####################################################################
+    marker_end: "\n"
+    marker: "{mark}"
+    path: ~/.zshrc
+    content: |-
+      eval "$(fasd --init auto)"
+      alias a='fasd -a'        # any
+      alias s='fasd -si'       # show / search / select
+      alias d='fasd -d'        # directory
+      alias f='fasd -f'        # file
+      alias sd='fasd -sid'     # interactive directory selection
+      alias sf='fasd -sif'     # interactive file selection
+      alias z='fasd_cd -d'     # cd, same functionality as j in autojump
+      alias zz='fasd_cd -d -i' # cd with interactive selection
+
+- blockinfile:
+    marker_begin: |-
+      ####################################################################
+      # etc
+      ####################################################################
+    marker_end: "\n"
+    marker: "{mark}"
+    path: ~/.zshrc
+    content: |-
+      PATH=/usr/local/bin:/usr/bin:/bin:/$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
+
+      alias ll='ls -alFG'
+      alias la='ls -A'
+      alias l='ls -CF'
+
+      eval "$(thefuck --alias)"
+      eval "$(direnv hook zsh)"
+
+      test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

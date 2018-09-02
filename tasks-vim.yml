@@ -1,0 +1,159 @@
+# http://blog.briankmarsh.com/ansible-vi-management/
+# https://github.com/ftaebi/ansible_pathogen/blob/master/tasks/main.yml
+# https://sysnet4admin.blogspot.com/2017/06/ansible-yaml.html#.W21BMNgzbUI
+# https://hackernoon.com/5-vim-plugins-i-cant-live-without-for-javascript-development-f7e98f98e8d5
+# https://stackoverflow.com/questions/1676632/whats-a-quick-way-to-comment-uncomment-lines-in-vim
+
+- debug:
+    msg: playbook-vim.yml
+
+- name: ensure ppa:jonathonf/vim is present
+  become: true
+  apt_repository:
+    repo: ppa:jonathonf/vim
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: ensure vim packages is at the latest version
+  become: true
+  apt:
+    name:
+    - vim
+    state: latest
+  when: ansible_os_family == "Debian"
+
+- name: ensure vim packages is at the latest version
+  homebrew:
+    name: vim
+    state: latest
+    update_homebrew: no
+  when: ansible_os_family == "Darwin"
+
+- name: "Create directories for pathogen, plugins and backup file"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+  - "{{ ansible_env.HOME }}/viBackup"
+  - "{{ ansible_env.HOME }}/.vim/autoload"
+  - "{{ ansible_env.HOME }}/.vim/bundle"
+
+- name: "Install pathogen"
+  get_url:
+    url: https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+    dest: "{{ ansible_env.HOME }}/.vim/autoload/"
+
+- name: touch .vimrc
+  file:
+    path: "{{ ansible_env.HOME }}/.vimrc"
+    state: touch
+    mode: 0644
+  # https://github.com/ansible/ansible-modules-core/issues/170
+  register: touch_log
+  changed_when: touch_log.diff.before.state != "file" or touch_log.diff.before.mode is defined
+
+# - name: touch_log
+#   debug:
+#     var: touch_log
+
+- name: copying file with owner and permissions
+  copy:
+    src: .vimrc
+    dest: ~/.vimrc.before_insert_by_ansible
+    mode: 0644
+  register: vimrc_copy_result
+
+- name: copying file with owner and permissions
+  copy:
+    src: .vimrc
+    dest: ~/.vimrc
+    mode: 0644
+  when: vimrc_copy_result.changed
+
+# - name: vimrc_copy_result
+#   debug:
+#     var: vimrc_copy_result
+
+# marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다
+- blockinfile:
+    marker: '"{mark} ANSIBLE MANAGED BLOCK FOR COPY_TO_SYSTEM_BUFFER'
+    path: ~/.vimrc
+    content: |-
+      vmap <S-y> :<Esc>`>a<CR><Esc>mx`<i<CR><Esc>my'xk$v'y!awk 'NR > 1 { print h } { h = $0 } END { ORS = ""; print h }' \| pbcopy<CR>u
+  when: ansible_os_family == "Darwin"
+
+- blockinfile:
+    marker: '"{mark} ANSIBLE MANAGED BLOCK FOR COPY_TO_SYSTEM_BUFFER'
+    path: ~/.vimrc
+    content: |-
+      vmap <C-c> :<Esc>`>a<CR><Esc>mx`<i<CR><Esc>my'xk$v'y!xclip -selection c<CR>u
+  when: ansible_os_family == "Debian"
+
+- name: "Install plugins"
+  git:
+    repo: "{{ item.repo }}"
+    update: false
+    version: "{{ item.version | default('master') }}"
+    dest: "{{ ansible_env.HOME }}/.vim/bundle/{{ item.name | default(item.repo.split('/')[-1][:-4]) }}"
+    depth: 1
+  with_items: &managed_plugins
+  - repo: https://github.com/scrooloose/nerdtree.git
+  - repo: https://github.com/Lokaltog/vim-easymotion.git
+  - repo: https://github.com/majutsushi/tagbar.git
+  - repo: https://github.com/vim-scripts/DirDiff.vim.git
+  - repo: https://github.com/bling/vim-airline.git
+  - repo: https://github.com/plasticboy/vim-markdown.git
+  - repo: https://github.com/tpope/vim-unimpaired
+  - repo: https://github.com/w0rp/ale.git
+  - repo: https://github.com/mbbill/undotree.git
+  - repo: https://github.com/tpope/vim-fugitive.git
+  - repo: https://github.com/neoclide/vim-jsx-improve.git
+  - repo: https://github.com/MaxMEllon/vim-jsx-pretty.git
+  - repo: https://github.com/chrisbra/SudoEdit.vim.git
+  - repo: https://github.com/hashivim/vim-hashicorp-tools.git
+  - repo: https://github.com/othree/xml.vim.git
+  - repo: https://github.com/junegunn/fzf.vim.git
+  - repo: https://github.com/rking/ag.vim.git
+  - repo: https://github.com/junegunn/vim-peekaboo.git
+  - repo: https://github.com/isRuslan/vim-es6.git
+  - repo: https://github.com/rargo/vim-tab.git
+  - repo: https://github.com/nathanaelkane/vim-indent-guides.git
+  - repo: https://github.com/nanotech/jellybeans.vim.git
+  - repo: https://github.com/junegunn/vim-easy-align.git
+  - repo: https://github.com/editorconfig/editorconfig-vim.git
+  - repo: https://github.com/ntpeters/vim-better-whitespace.git
+  - repo: https://github.com/tpope/vim-unimpaired.git
+  - repo: https://github.com/tpope/vim-repeat.git
+
+
+- name: register for managed plugins
+  set_fact: "{{ item.name | default(item.repo.split('/')[-1][:-4]) }}"
+  with_items: *managed_plugins
+  register: tmp
+
+- name: set fact for managed plugins
+  set_fact:
+    managed_plugins: "{{ tmp.results | map(attribute='ansible_facts._raw_params') | list }}"
+
+# - name: managed plugins
+#   debug:
+#     var: managed_plugins
+
+- name: get current plugins
+  shell: ls -1 ~/.vim/bundle/
+  register: current_plugins
+  changed_when: false
+
+# - name: current all plugins
+#   debug:
+#     msg: "hi {{ item }}"
+#   with_items: "{{ current_plugins.stdout_lines }}"
+
+- name: delete unmanaged plugins
+  file:
+    path: ~/.vim/bundle/{{ item }}
+    state: absent
+  with_items: "{{ current_plugins.stdout_lines }}"
+  when: item not in managed_plugins
+

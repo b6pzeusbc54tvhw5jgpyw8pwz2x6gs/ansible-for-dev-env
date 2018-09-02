@@ -1,0 +1,54 @@
+# https://docs.ansible.com/ansible/2.5/user_guide/playbooks_reuse_roles.html
+
+---
+- hosts: all
+  tasks:
+  - debug:
+      msg: start tasks
+
+  - import_role:
+      name: geerlingguy.pip
+    become: true
+
+  - import_role:
+      name: geerlingguy.docker
+    become: true
+    vars:
+      docker_users:
+      - bilbil
+
+  - import_role:
+      name: geerlingguy.ruby
+    become: true
+    vars:
+      ruby_version: 2.5.1
+
+  - name: include tasks-vim.yml
+    import_tasks: tasks-vim.yml
+    tags: vim
+
+  - debug:
+      msg: import tasks-git.yml
+  - name: include tasks-git.yml
+    import_tasks: tasks-git.yml
+    tags: git
+
+  - debug:
+      msg: import tasks-apt.yml
+  - name: include tasks-apt.yml
+    import_tasks: tasks-apt.yml
+    tags: apt
+
+  - name: ensure tmuxinator packages is at the latest version
+    gem:
+      name: tmuxinator
+      state: latest
+
+  # command 가 있으면 해당 command 의 zsh plugin 을 설치 하는 동작이 있으므로 맨 아래에 배치
+  - debug:
+      msg: import tasks-zsh.yml
+  - name: include tasks-zsh.yml
+    import_tasks: tasks-zsh.yml
+    tags: zsh
+
+
