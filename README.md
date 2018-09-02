@@ -22,7 +22,7 @@ all:
 ## excute
 
 ```
-$ ansible-playbook site.yml -i hosts.yml -k -K -vw
+$ ansible-playbook site.yml -i hosts.yml -k -K -vv
 $ ansible-playbook site.yml -i hosts.yml -k -K -t git
 ```
 
