@@ -7,10 +7,6 @@
       msg: start tasks
 
   - import_role:
-      name: geerlingguy.pip
-    become: true
-
-  - import_role:
       name: geerlingguy.docker
     become: true
     vars:
