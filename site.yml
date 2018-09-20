@@ -23,6 +23,10 @@
     vars:
       ruby_version: 2.5.1
 
+  - name: include tasks-pip.yml
+    import_tasks: tasks-pip.yml
+    tags: pip
+
   - name: include tasks-vim.yml
     import_tasks: tasks-vim.yml
     tags: vim
