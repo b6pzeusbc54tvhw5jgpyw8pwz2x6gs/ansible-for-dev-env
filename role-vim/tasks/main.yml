@@ -93,7 +93,7 @@
 - name: "Install plugins"
   git:
     repo: "{{ item.repo }}"
-    update: false
+    update: "{{ EXTRA_VAR_UPDATE_VIM_PLUGIN | default(false) | bool }}"
     version: "{{ item.version | default('master') }}"
     dest: "{{ ansible_env.HOME }}/.vim/bundle/{{ item.name | default(item.repo.split('/')[-1][:-4]) }}"
     depth: 1

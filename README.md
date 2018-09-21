@@ -24,6 +24,7 @@ all:
 ```sh
 $ ansible-playbook site.yml -i hosts.yml -k -K -vv
 $ ansible-playbook site.yml -i hosts.yml -k -K -t git
+$ ansible-playbook site.yml -i hosts.yml -k -K -t vim --extra-vars '{"EXTRA_VAR_UPDATE_VIM_PLUGIN":true}'
 ```
 
 ## Tip. yaml debugging
