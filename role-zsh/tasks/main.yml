@@ -35,40 +35,37 @@
     # must be last, don't work on zsh < 4.3.17
     #- { name: zsh-users/zsh-syntax-highlighting, when: "{{ zsh_version | default(false) | version_compare('4.3.17', '>=') }}" }
     - { name: zdharma/fast-syntax-highlighting, when: "{{ zsh_version | default(false) | version_compare('4.3.17', '>=') }}" }
- 
-- blockinfile:
-    marker_begin: |-
-      ####################################################################
-      # fasd
-      ####################################################################
-    marker_end: "\n"
-    marker: "{mark}"
-    path: ~/.zshrc
-    content: |-
-      eval "$(fasd --init auto)"
-      alias a='fasd -a'        # any
-      alias s='fasd -si'       # show / search / select
-      alias d='fasd -d'        # directory
-      alias f='fasd -f'        # file
-      alias sd='fasd -sid'     # interactive directory selection
-      alias sf='fasd -sif'     # interactive file selection
-      alias z='fasd_cd -d'     # cd, same functionality as j in autojump
-      alias zz='fasd_cd -d -i' # cd with interactive selection
 
-- blockinfile:
-    marker_begin: |-
-      ####################################################################
-      # etc
-      ####################################################################
-    marker_end: "\n"
-    marker: "{mark}"
-    path: ~/.zshrc
-    content: |-
-      PATH=/usr/local/bin:/usr/bin:/bin:/$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
+- name: touch .zshrc.local
+  file:
+    path: "{{ ansible_env.HOME }}/.zshrc.local"
+    state: touch
+    mode: 0644
+  # https://github.com/ansible/ansible-modules-core/issues/170
+  register: touch_log
+  changed_when: touch_log.diff.before.state != "file" or touch_log.diff.before.mode is defined
 
-      alias ll='ls -alFG'
-      alias la='ls -A'
-      alias l='ls -CF'
+- name: ready copying .zshrc.local
+  copy:
+    src: .zshrc.local
+    dest: "~{{ ansible_user_id }}/.zshrc.local.before_ansible_manage_line"
+    mode: 0644
+  register: zshrc_local_copy_result
 
-      eval "$(thefuck --alias)"
-      eval "$(direnv hook zsh)"
+- name: copy .zshrc.local
+  copy:
+    src: .zshrc.local
+    dest: "~{{ ansible_user_id }}/.zshrc.local"
+    mode: 0644
+  when: zshrc_local_copy_result.changed
+
+- name: "Clone fzf"
+  git:
+    repo: "https://github.com/junegunn/fzf.git"
+    update: false
+    dest: "~{{ ansible_user_id }}/.fzf"
+  register: fzf_install_result
+
+- name: "Install fzf"
+  command: "~{{ ansible_user_id }}/.fzf/install --key-bindings --completion --no-update-rc"
+  when: fzf_install_result.changed

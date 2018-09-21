@@ -1,0 +1,11 @@
+---
+
+
+_vim_fzf_path: |
+  {% if ansible_os_family == 'Darwin' %}
+    {{ "/usr/local/opt/fzf" }}
+  {% else %}
+    {{ "~/.fzf" }}
+  {% endif %}
+
+vim_fzf_path: "{{ _vim_fzf_path | trim }}"

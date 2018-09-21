@@ -60,7 +60,7 @@
 - name: copying file with owner and permissions
   copy:
     src: .vimrc
-    dest: ~/.vimrc.before_insert_by_ansible
+    dest: ~/.vimrc.before_ansible_manage_line
     mode: 0644
   register: vimrc_copy_result
 
@@ -104,7 +104,6 @@
   - repo: https://github.com/vim-scripts/DirDiff.vim.git
   - repo: https://github.com/bling/vim-airline.git
   - repo: https://github.com/plasticboy/vim-markdown.git
-  - repo: https://github.com/tpope/vim-unimpaired
   - repo: https://github.com/w0rp/ale.git
   - repo: https://github.com/mbbill/undotree.git
   - repo: https://github.com/tpope/vim-fugitive.git
@@ -156,4 +155,10 @@
     state: absent
   with_items: "{{ current_plugins.stdout_lines }}"
   when: item not in managed_plugins
+
+# marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다
+- blockinfile:
+    marker: '" {mark} ANSIBLE_MANAGED_BLOCK_FOR_SET_RTP_FZF'
+    path: "~{{ ansible_user_id }}/.vimrc"
+    content: "set rtp+={{ vim_fzf_path }}"
 

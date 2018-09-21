@@ -1,0 +1,35 @@
+
+####################################################################
+# fasd
+
+eval "$(fasd --init auto)"
+alias a='fasd -a'        # any
+alias s='fasd -si'       # show / search / select
+alias d='fasd -d'        # directory
+alias f='fasd -f'        # file
+alias sd='fasd -sid'     # interactive directory selection
+alias sf='fasd -sif'     # interactive file selection
+alias z='fasd_cd -d'     # cd, same functionality as j in autojump
+alias zz='fasd_cd -d -i' # cd with interactive selection
+
+
+####################################################################
+# etc
+
+PATH=/usr/local/bin:/usr/bin:/bin:/$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
+
+alias ll='ls -alFG'
+alias la='ls -A'
+alias l='ls -CF'
+
+eval "$(thefuck --alias)"
+eval "$(direnv hook zsh)"
+
+export EDITOR="/usr/bin/vim"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export P4CONFIG=~/.p4config
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
