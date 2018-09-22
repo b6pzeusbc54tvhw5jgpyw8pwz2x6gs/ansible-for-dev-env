@@ -1,22 +1,20 @@
 # https://docs.ansible.com/ansible/2.5/user_guide/playbooks_reuse_roles.html
 
+
 ---
 - hosts: all
   roles:
-    - role: geerlingguy.docker
-      become: true
-      vars:
-        docker_users:
-        - "{{ ansible_user_id }}"
+
+    - { role: role-apt, tags: 'apt', when: "ansible_os_family == 'Debian'" }
+    - { role: role-docker, tags: 'docker' }
+    - { role: role-pip, tags: 'pip' }
+    - { role: role-vim, tags: 'vim' }
+    - { role: role-git, tags: 'git' }
+
     - role: geerlingguy.ruby
       become: true
       vars:
         ruby_version: 2.5.1
-    - { role: role-pip, tags: 'pip' }
-    - { role: role-vim, tags: 'vim' }
-    - { role: role-git, tags: 'git' }
-    - { role: role-apt, tags: 'apt', when: "ansible_os_family == 'Debian'" }
-
 
   tasks:
     - name: ensure tmuxinator packages is at the latest version

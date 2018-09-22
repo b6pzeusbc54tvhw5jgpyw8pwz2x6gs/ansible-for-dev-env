@@ -1,0 +1,17 @@
+
+
+
+- name: "ready docker.server.d"
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    mode: 0755
+  become: true
+
+- name: http-proxy.conf
+  copy:
+    src: http-proxy.conf
+    dest: /etc/systemd/system/docker.service.d/
+    mode: 0644
+  notify: restart docker
+  become: true

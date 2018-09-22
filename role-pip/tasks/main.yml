@@ -3,7 +3,7 @@
   become: true
   vars:
     python_ppa: ppa:deadsnakes/ppa
-    python_versions: [3.6]
+    python_versions: ["2.7","3.6"]
 
 - import_role:
     name: geerlingguy.pip

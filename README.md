@@ -1,11 +1,12 @@
 # ansible
 
 ## install role
+
 ```sh
-$ ansible-galaxy install geerlingguy.docker
-$ ansible-galaxy install geerlingguy.pip
-$ ansible-galaxy install geerlingguy.ruby
-$ ansible-galaxy install Stouts.python
+$ ansible-galaxy install --roles-path=.galaxy_roles geerlingguy.docker
+$ ansible-galaxy install --roles-path=.galaxy_roles geerlingguy.pip
+$ ansible-galaxy install --roles-path=.galaxy_roles geerlingguy.ruby
+$ ansible-galaxy install --roles-path=.galaxy_roles Stouts.python 
 ```
 
 ## hosts.yml example
