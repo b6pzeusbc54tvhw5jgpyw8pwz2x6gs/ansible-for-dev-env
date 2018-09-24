@@ -1,6 +1,7 @@
 site.retry
 
 .galaxy_roles/
+.extraValue.yml
 
 hosts.yml
 

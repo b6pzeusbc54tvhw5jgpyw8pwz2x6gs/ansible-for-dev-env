@@ -1,0 +1,6 @@
+
+docker_http_proxy_conf: |
+    [Service]
+    Environment="HTTP_PROXY={{EXTRA_VAR_PROXY_SERVER_URL}}"
+    Environment="HTTPS_PROXY={{EXTRA_VAR_PROXY_SERVER_URL}}"
+    Environment="NO_PROXY=localhost,127.0.0.1,localaddress,.localdomain.com"

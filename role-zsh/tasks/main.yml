@@ -30,5 +30,6 @@
   register: fzf_install_result
 
 - name: "Install fzf"
+  become: true
   command: "~{{ ansible_user_id }}/.fzf/install --key-bindings --completion --no-update-rc"
   when: fzf_install_result.changed
