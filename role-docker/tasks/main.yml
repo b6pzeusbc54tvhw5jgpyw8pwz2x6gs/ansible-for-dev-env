@@ -1,6 +1,4 @@
 
-
-
 - name: "ready docker.server.d"
   file:
     path: /etc/systemd/system/docker.service.d
@@ -10,8 +8,26 @@
 
 - name: http-proxy.conf
   copy:
-    src: http-proxy.conf
-    dest: /etc/systemd/system/docker.service.d/
+    dest: /etc/systemd/system/docker.service.d/http-proxy.conf
     mode: 0644
-  notify: restart docker
+    content: "{{ docker_http_proxy_conf }}"
   become: true
+  when: EXTRA_VAR_PROXY_SERVER_URL is defined
+  register: proxy_conf
+
+- name: remove http-proxy.conf
+  file:
+    path: /etc/systemd/system/docker.service.d/http-proxy.conf
+    state: absent
+    mode: 0644
+  become: true
+  when: EXTRA_VAR_PROXY_SERVER_URL is not defined
+  register: proxy_conf
+
+- name: daemon reload
+  systemd:
+    daemon_reload: true
+  become: true
+  changed_when: true
+  notify: restart docker
+  # when: proxy_conf.changed

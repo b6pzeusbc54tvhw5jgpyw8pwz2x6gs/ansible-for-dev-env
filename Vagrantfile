@@ -16,7 +16,9 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "site.yml"
-    ansible.extra_vars = { ansible_python_interpreter: "/usr/bin/python3" }
+    ansible.extra_vars = ".extraValue.yml"
+    ansible.tags="zsh"
+    ansible.verbose="-v"
   end
 
   config.vm.provision "shell", name: "clean", inline: <<-SHELL

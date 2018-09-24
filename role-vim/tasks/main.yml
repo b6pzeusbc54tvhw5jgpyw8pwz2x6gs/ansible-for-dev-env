@@ -14,7 +14,7 @@
     state: present
   when: ansible_os_family == "Debian"
 
-- name: ensure vim packages is at the latest version
+- name: ensure vim packages is at the latest version for Debian
   become: true
   apt:
     name:
@@ -22,7 +22,7 @@
     state: latest
   when: ansible_os_family == "Debian"
 
-- name: ensure vim packages is at the latest version
+- name: ensure vim packages is at the latest version for Darwin
   homebrew:
     name: vim
     state: latest
