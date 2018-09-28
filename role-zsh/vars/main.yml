@@ -1,0 +1,19 @@
+zsh_proxyrc: |
+    export https_proxy={{EXTRA_VAR_PROXY_SERVER_URL}}/
+    export http_proxy={{EXTRA_VAR_PROXY_SERVER_URL}}/
+    export HTTPS_PROXY={{EXTRA_VAR_PROXY_SERVER_URL}}/
+    export HTTP_PROXY={{EXTRA_VAR_PROXY_SERVER_URL}}/
+
+zsh_proxyrc_unset: |
+    unset https_proxy
+    unset http_proxy
+    unset HTTPS_PROXY
+    unset HTTP_PROXY
+
+ca_path:
+  RedHat:
+    6: /usr/local/share/ca-certificates
+    7: /etc/pki/ca-trust/source/anchors
+  Debian:
+    # maybe for ubuntu 16
+    16: /usr/local/share/ca-certificates
