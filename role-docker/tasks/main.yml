@@ -30,4 +30,5 @@
   become: true
   changed_when: true
   notify: restart docker
-  # when: proxy_conf.changed
+  when: proxy_conf.changed
+

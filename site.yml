@@ -10,6 +10,7 @@
     - { role: role-pip, tags: 'pip' }
     - { role: role-vim, tags: 'vim' }
     - { role: role-git, tags: 'git' }
+    - { role: role-node, tags: 'node' }
     # command 존재 여부로 zsh plugin 을 설치 하므로 하단에 배치해야함
     - { role: role-zsh, tags: 'zsh' }
 
