@@ -1,6 +1,5 @@
 ---
 
-
 _vim_fzf_path: |
   {% if ansible_os_family == 'Darwin' %}
     {{ "/usr/local/opt/fzf" }}
@@ -9,3 +8,13 @@ _vim_fzf_path: |
   {% endif %}
 
 vim_fzf_path: "{{ _vim_fzf_path | trim }}"
+
+
+_vim_copy_to_system_buffer_command: |
+  {% if ansible_os_family == 'Darwin' %}
+    vmap <S-y> :<Esc>`>a<CR><Esc>mx`<i<CR><Esc>my'xk$v'y!awk 'NR > 1 { print h } { h = $0 } END { ORS = ""; print h }' \| pbcopy<CR>u
+  {% else %}
+    vmap <C-c> :<Esc>`>a<CR><Esc>mx`<i<CR><Esc>my'xk$v'y!xclip -selection c<CR>u
+  {% endif %}
+
+vim_copy_to_system_buffer_command: "{{ _vim_copy_to_system_buffer_command | trim }}"
