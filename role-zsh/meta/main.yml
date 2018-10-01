@@ -37,3 +37,8 @@ dependencies:
       #- { name: zsh-users/zsh-syntax-highlighting, when: "{{ zsh_version | default(false) | version_compare('4.3.17', '>=') }}" }
       - { name: zdharma/fast-syntax-highlighting, when: "{{ zsh_version | default(false) | version_compare('4.3.17', '>=') }}" }
 
+  - role: geerlingguy.ruby
+    become: true
+    vars:
+      ruby_version: 2.5.1
+
