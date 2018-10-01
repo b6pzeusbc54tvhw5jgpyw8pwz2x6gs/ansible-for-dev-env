@@ -79,16 +79,7 @@
 - blockinfile:
     marker: '"{mark} ANSIBLE MANAGED BLOCK FOR COPY_TO_SYSTEM_BUFFER'
     path: ~/.vimrc
-    content: |-
-      vmap <S-y> :<Esc>`>a<CR><Esc>mx`<i<CR><Esc>my'xk$v'y!awk 'NR > 1 { print h } { h = $0 } END { ORS = ""; print h }' \| pbcopy<CR>u
-  when: ansible_os_family == "Darwin"
-
-- blockinfile:
-    marker: '"{mark} ANSIBLE MANAGED BLOCK FOR COPY_TO_SYSTEM_BUFFER'
-    path: ~/.vimrc
-    content: |-
-      vmap <C-c> :<Esc>`>a<CR><Esc>mx`<i<CR><Esc>my'xk$v'y!xclip -selection c<CR>u
-  when: ansible_os_family == "Debian"
+    content: "{{ vim_copy_to_system_buffer_command }}"
 
 - name: "Install plugins"
   git:
@@ -111,7 +102,6 @@
   - repo: https://github.com/MaxMEllon/vim-jsx-pretty.git
   - repo: https://github.com/chrisbra/SudoEdit.vim.git
   - repo: https://github.com/hashivim/vim-hashicorp-tools.git
-  - repo: https://github.com/othree/xml.vim.git
   - repo: https://github.com/junegunn/fzf.vim.git
   - repo: https://github.com/rking/ag.vim.git
   - repo: https://github.com/junegunn/vim-peekaboo.git

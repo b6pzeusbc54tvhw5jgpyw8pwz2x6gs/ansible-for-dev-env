@@ -17,6 +17,7 @@
     - thefuck
     - silversearcher-ag
     - fasd
+    - xclip
     state: latest
 
 - name: Install a ripgrep
