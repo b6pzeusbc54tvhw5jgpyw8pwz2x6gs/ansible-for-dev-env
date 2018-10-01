@@ -10,23 +10,6 @@
     - { role: role-pip, tags: 'pip' }
     - { role: role-vim, tags: 'vim' }
     - { role: role-git, tags: 'git' }
-
-    - role: geerlingguy.ruby
-      become: true
-      vars:
-        ruby_version: 2.5.1
-
-  tasks:
-    - name: ensure tmuxinator packages is at the latest version
-      gem:
-        name: tmuxinator
-        state: latest
-
     # command 존재 여부로 zsh plugin 을 설치 하므로 하단에 배치해야함
-    - import_role:
-        name: role-zsh
-      become: true
-      tags: zsh
-      vars:
-        docker_users:
-        - "{{ ansible_user_id }}"
+    - { role: role-zsh, tags: 'zsh' }
+
