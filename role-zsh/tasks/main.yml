@@ -35,35 +35,11 @@
   when: fzf_install_result.changed
 
 - name: ensure tmuxinator packages is at the latest version
+  become: true
   gem:
     name: tmuxinator
     state: latest
 
-- name: copy proxyrc file
-  copy:
-    dest: "~{{ ansible_user_id }}/proxyrc"
-    mode: 0644
-    content: "{{ zsh_proxyrc }}"
-  when: EXTRA_VAR_PROXY_SERVER_URL is defined
-
-- name: copy proxyrc-unset file
-  copy:
-    dest: "~{{ ansible_user_id }}/proxyrc-unset"
-    mode: 0644
-    content: "{{ zsh_proxyrc_unset }}"
-  when: EXTRA_VAR_PROXY_SERVER_URL is defined
-
-- name: delete proxyrc file
-  file:
-    path: "~{{ ansible_user_id }}/proxyrc"
-    state: absent
-  when: EXTRA_VAR_PROXY_SERVER_URL is not defined
-
-- name: delete proxyrc-unset file
-  file:
-    path: "~{{ ansible_user_id }}/proxyrc-unset"
-    state: absent
-  when: EXTRA_VAR_PROXY_SERVER_URL is not defined
 
 - name: install ca package on rhel systems
   yum:
@@ -80,29 +56,6 @@
 - name: enable dynamic ca configuration on rhel6
   shell: /bin/update-ca-trust enable
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
-
-- name: copy certificate authority to trusted ca path of the os
-  copy:
-    content: "{{ EXTRA_VAR_CA_CERT }}"
-    dest: '{{ ca_path[ansible_os_family][ansible_distribution_major_version|int] }}/company.crt'
-    owner: root
-    group: root
-    mode: 0644
-  become: true
-  when: EXTRA_VAR_PROXY_SERVER_URL is defined
-  notify:
-    - update trusted ca debian
-    - update trusted ca redhat
-
-- name: delete certificate
-  file:
-    path: '{{ ca_path[ansible_os_family][ansible_distribution_major_version|int] }}/company.crt'
-    state: absent
-  become: true
-  when: EXTRA_VAR_PROXY_SERVER_URL is not defined
-  notify:
-    - update trusted ca debian
-    - update trusted ca redhat
 
 # marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다
 - blockinfile:

@@ -1,3 +1,14 @@
+_node_npmrc_proxy: |
+  {% if EXTRA_VAR_PROXY_SERVER_URL is defined %}
+  proxy={{EXTRA_VAR_PROXY_SERVER_URL}}
+  https-proxy={{EXTRA_VAR_PROXY_SERVER_URL}}
+  cafile={{ ansible_env.HOME }}/company.crt
+  {% else %}
+    ""
+  {% endif %}
+
+node_npmrc_proxy: "{{ _node_npmrc_proxy | trim }}"
+
 zsh_proxyrc: |
     export https_proxy={{EXTRA_VAR_PROXY_SERVER_URL}}/
     export http_proxy={{EXTRA_VAR_PROXY_SERVER_URL}}/
@@ -17,3 +28,11 @@ ca_path:
   Debian:
     # maybe for ubuntu 16
     16: /usr/local/share/ca-certificates
+
+apt_company_proxy: |
+    {% if EXTRA_VAR_PROXY_SERVER_URL is defined %}
+    Acquire::http::Proxy "{{EXTRA_VAR_PROXY_SERVER_URL}}";
+    Acquire::https::Proxy "{{EXTRA_VAR_PROXY_SERVER_URL}}";
+    {% else %}
+    {% endif %}
+

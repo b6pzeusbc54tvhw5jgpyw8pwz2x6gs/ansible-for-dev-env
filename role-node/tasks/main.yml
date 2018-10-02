@@ -14,32 +14,6 @@
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
     nvm install 8
 
-- name: copy npmrc file
-  copy:
-    dest: "~{{ ansible_user_id }}/company.crt"
-    mode: 0644
-    content: "{{ zsh_proxyrc }}"
-  when: EXTRA_VAR_PROXY_SERVER_URL is defined
-
-- name: copy proxyrc-unset file
-  copy:
-    dest: "~{{ ansible_user_id }}/proxyrc-unset"
-    mode: 0644
-    content: "{{ zsh_proxyrc_unset }}"
-  when: EXTRA_VAR_PROXY_SERVER_URL is defined
-
-- name: delete proxyrc file
-  file:
-    path: "~{{ ansible_user_id }}/proxyrc"
-    state: absent
-  when: EXTRA_VAR_PROXY_SERVER_URL is not defined
-
-- name: delete proxyrc-unset file
-  file:
-    path: "~{{ ansible_user_id }}/proxyrc-unset"
-    state: absent
-  when: EXTRA_VAR_PROXY_SERVER_URL is not defined
-
 - name: touch .npmrc
   file:
     path: "{{ ansible_env.HOME }}/.npmrc"
@@ -49,23 +23,6 @@
   register: touch_log
   changed_when: touch_log.diff.before.state != "file" or touch_log.diff.before.mode is defined
 
-- name: copy company.crt file into home directory
-  copy:
-    content: "{{ EXTRA_VAR_CA_CERT }}"
-    dest: "~{{ ansible_user_id }}/company.crt"
-  when: EXTRA_VAR_CA_CERT is defined
-
-- name: delete company.crt file
-  file:
-    path: "~{{ ansible_user_id }}/company.crt"
-    state: absent
-  when: EXTRA_VAR_CA_CERT is not defined
-
-# marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다
-- blockinfile:
-    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR PROXY"
-    path: ~/.npmrc
-    content: "{{ node_npmrc_proxy }}"
 
 
 

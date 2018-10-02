@@ -4,6 +4,7 @@
   apt_repository:
     repo: ppa:aacebedo/fasd
     state: present
+    update_cache: false
 
 - name: Configure the Yarn APT key
   become: true
@@ -14,12 +15,15 @@
   apt_repository:
     repo: 'deb https://dl.yarnpkg.com/debian/ stable main'
     state: present
+    update_cache: false
 
 - name: ensure apt packages is at the latest version
   become: true
   when: ansible_os_family == "Debian"
   apt:
     install_recommends: false
+    update_cache: true
+    state: latest
     name:
       - direnv
       - jq
@@ -34,7 +38,6 @@
       - git-extras
       - fasd
       - tree
-    state: latest
 
 - name: Check if ripgrep is installed
   shell: "command -v rg || which rg"
@@ -66,9 +69,3 @@
     state: latest
     update_homebrew: no
 
-- name: apt proxy configure
-  become: true
-  copy:
-    content: "{{ apt_company_proxy }}"
-    dest: /etc/apt/apt.conf.d/200company-proxy.conf
-  when: ansible_os_family == "Debian"
