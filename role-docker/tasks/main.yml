@@ -13,7 +13,7 @@
     content: "{{ docker_http_proxy_conf }}"
   become: true
   when: EXTRA_VAR_PROXY_SERVER_URL is defined
-  register: proxy_conf
+  register: change_proxy_conf
 
 - name: remove http-proxy.conf
   file:
@@ -22,7 +22,7 @@
     mode: 0644
   become: true
   when: EXTRA_VAR_PROXY_SERVER_URL is not defined
-  register: proxy_conf
+  register: remove_proxy_conf
 
 - name: daemon reload
   systemd:
@@ -30,5 +30,5 @@
   become: true
   changed_when: true
   notify: restart docker
-  when: proxy_conf.changed
+  when: change_proxy_conf.changed or remove_proxy_conf.changed
 
