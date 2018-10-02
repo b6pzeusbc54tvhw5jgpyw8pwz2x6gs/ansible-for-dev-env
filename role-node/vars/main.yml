@@ -1,7 +1,7 @@
 _node_npmrc_proxy: |
   {% if EXTRA_VAR_PROXY_SERVER_URL is defined %}
-    proxy={{EXTRA_VAR_PROXY_SERVER_URL}}/
-    https-proxy={{EXTRA_VAR_PROXY_SERVER_URL}}/
+    proxy={{EXTRA_VAR_PROXY_SERVER_URL}}
+    https-proxy={{EXTRA_VAR_PROXY_SERVER_URL}}
     cafile={{ ansible_env.HOME }}/company.crt
   {% else %}
     ""

@@ -1,0 +1,7 @@
+apt_company_proxy: |
+    {% if EXTRA_VAR_PROXY_SERVER_URL is defined %}
+    Acquire::http::Proxy "{{EXTRA_VAR_PROXY_SERVER_URL}}";
+    Acquire::https::Proxy "{{EXTRA_VAR_PROXY_SERVER_URL}}";
+    {% else %}
+    {% endif %}
+

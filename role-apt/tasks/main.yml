@@ -1,26 +1,74 @@
 
-
 - name: ensure ppa:aacebedo/fasd is present
   become: true
   apt_repository:
     repo: ppa:aacebedo/fasd
     state: present
+
+- name: Configure the Yarn APT key
+  become: true
+  apt_key: url=https://dl.yarnpkg.com/debian/pubkey.gpg
+
+- name: Add Yarn repository
+  become: true
+  apt_repository:
+    repo: 'deb https://dl.yarnpkg.com/debian/ stable main'
+    state: present
+
 - name: ensure apt packages is at the latest version
   become: true
+  when: ansible_os_family == "Debian"
   apt:
+    install_recommends: false
     name:
-    - direnv
-    - jq
-    - curl
-    - python-pkg-resources
-    - gcc
-    - thefuck
-    - silversearcher-ag
-    - fasd
-    - xclip
+      - direnv
+      - jq
+      - curl
+      - python-pkg-resources
+      - gcc
+      - thefuck
+      - silversearcher-ag
+      - xclip
+      - yarn
+      - git
+      - git-extras
+      - fasd
+      - tree
     state: latest
 
-- name: Install a ripgrep
+- name: Check if ripgrep is installed
+  shell: "command -v rg || which rg"
+  register: ripgrep_is_installed
+  changed_when: false
+  failed_when: false
+
+- name: Install a ripgrep for Debian
   become: true
   apt:
     deb: https://github.com/BurntSushi/ripgrep/releases/download/0.9.0/ripgrep_0.9.0_amd64.deb
+  when: ripgrep_is_installed.rc != 0 and ansible_os_family == "Debian"
+
+- name: Install a brew packages for Darwin
+  when: ansible_os_family == "Darwin"
+  homebrew:
+    name:
+      - ripgrep
+      - jq
+      - direnv
+      - thefuck
+      - yarn
+      - the_silver_searcher
+      - fzf
+      - git
+      - git-extras
+      - fasd
+      - tree
+    state: latest
+    update_homebrew: no
+
+- name: apt proxy configure
+  become: true
+  copy:
+    content: "{{ apt_company_proxy }}"
+    dest: /etc/apt/apt.conf.d/200company-proxy.conf
+  when: ansible_os_family == "Debian"

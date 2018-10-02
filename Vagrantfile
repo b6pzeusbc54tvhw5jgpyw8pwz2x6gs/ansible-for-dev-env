@@ -14,6 +14,9 @@ Vagrant.configure("2") do |config|
     vb.memory = 2048
   end
 
+  config.vm.provision "file",
+    source: "vagrant-key.pub", destination: "/home/vagrant/vagrant-key.pub"
+
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "site.yml"
     ansible.extra_vars = ".extraValue.yml"
@@ -25,5 +28,4 @@ Vagrant.configure("2") do |config|
     rm -f /EMPTY
     cat /dev/null > ~/.bash_history && history -c
   SHELL
-
 end
