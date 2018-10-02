@@ -1,6 +1,6 @@
 [http]
-  # proxy = http://123.123.123.123:8080
-  # sslCAInfo = ~/proxy.crt
+  # BEGIN ANSIBLE MANAGED BLOCK FOR GIT_PROXY
+  # END ANSIBLE MANAGED BLOCK FOR GIT_PROXY
 
 [alias]
   st = status

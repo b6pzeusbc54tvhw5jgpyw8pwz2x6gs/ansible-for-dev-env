@@ -4,7 +4,6 @@ _node_npmrc_proxy: |
   https-proxy={{EXTRA_VAR_PROXY_SERVER_URL}}
   cafile={{ ansible_env.HOME }}/company.crt
   {% else %}
-    ""
   {% endif %}
 
 node_npmrc_proxy: "{{ _node_npmrc_proxy | trim }}"
@@ -35,4 +34,12 @@ apt_company_proxy: |
     Acquire::https::Proxy "{{EXTRA_VAR_PROXY_SERVER_URL}}";
     {% else %}
     {% endif %}
+
+
+git_proxy: |
+  {% if EXTRA_VAR_PROXY_SERVER_URL is defined %}
+    # proxy = {{EXTRA_VAR_PROXY_SERVER_URL}}
+    # sslCAInfo = {{ ansible_env.HOME }}/company.crt
+  {% else %}
+  {% endif %}
 

@@ -29,14 +29,7 @@
 - blockinfile:
     marker: "  # {mark} ANSIBLE MANAGED BLOCK FOR GIT_HIDE_DIRTY"
     path: ~/.gitconfig
-    content: "  hide-dirty = 1"
-  when: ansible_env.USER == "vagrant"
-
-- blockinfile:
-    marker: "  # {mark} ANSIBLE MANAGED BLOCK FOR GIT_HIDE_DIRTY"
-    path: ~/.gitconfig
-    content: "  hide-dirty = 0"
-  when: ansible_env.USER != "vagrant"
+    content: "  hide-dirty = {{ '1' if ansible_env.USER == 'vagrant' else '0' }}"
 
 - name: "Install git-p4-support-hangul"
   git:

@@ -72,3 +72,8 @@
   notify:
     - update trusted ca debian
     - update trusted ca redhat
+
+- blockinfile:
+    marker: "  # {mark} ANSIBLE MANAGED BLOCK FOR GIT_PROXY"
+    path: "~{{ ansible_user_id }}/.gitconfig"
+    content: "{{ git_proxy }}"
