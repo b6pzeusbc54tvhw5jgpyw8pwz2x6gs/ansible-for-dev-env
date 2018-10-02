@@ -14,18 +14,15 @@ set autoindent
 set hls
 set backspace=indent,eol,start
 set relativenumber
-set backupdir=~/viBackup
-set dir=~/viBackup
+set backupdir=~/vimBackup
+set dir=~/vimBackup
 set t_Co=256
 
 " some short cut
 nnoremap ,q :q<CR>
-nnoremap ,fq :q!<CR>
-nnoremap ,fw :wq<CR>
 nnoremap ,w :w<CR>
 map gn :tabnew<CR>
 vmap ,e :%!bash<CR>
-map ;a ggVG
 
 " prevent Uppercase mistakenly
 vmap u y
@@ -33,10 +30,6 @@ vmap u y
 " search and stop
 nnoremap # :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
 
-" useful to line break on react coding
-noremap ,a f xi<CR><C-c>
-noremap ,b f>i<CR><C-c>
-noremap ,d f/i<CR><C-c>
 
 "----------------------------------------------------------------------
 " A mapping to make a backup of the current file

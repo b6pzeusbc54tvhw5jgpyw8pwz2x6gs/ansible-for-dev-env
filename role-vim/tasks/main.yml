@@ -35,7 +35,7 @@
     state: directory
     mode: 0755
   with_items:
-  - "{{ ansible_env.HOME }}/viBackup"
+  - "{{ ansible_env.HOME }}/vimBackup"
   - "{{ ansible_env.HOME }}/.vim/autoload"
   - "{{ ansible_env.HOME }}/.vim/bundle"
 
