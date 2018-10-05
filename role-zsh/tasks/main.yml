@@ -34,13 +34,6 @@
   command: "~{{ ansible_user_id }}/.fzf/install --key-bindings --completion --no-update-rc"
   when: fzf_install_result.changed
 
-- name: ensure tmuxinator packages is at the latest version
-  become: true
-  gem:
-    name: tmuxinator
-    state: latest
-
-
 - name: install ca package on rhel systems
   yum:
     name: ca-certificates

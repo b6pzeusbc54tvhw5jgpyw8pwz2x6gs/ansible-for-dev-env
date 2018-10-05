@@ -17,6 +17,7 @@ alias zz='fasd_cd -d -i' # cd with interactive selection
 # etc
 
 PATH=/usr/local/bin:/usr/bin:/bin:/$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
+PATH=$(ruby -e 'print Gem.user_dir')/bin:$PATH
 
 alias ll='ls -alFG'
 alias la='ls -A'
