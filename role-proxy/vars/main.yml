@@ -9,10 +9,10 @@ _node_npmrc_proxy: |
 node_npmrc_proxy: "{{ _node_npmrc_proxy | trim }}"
 
 zsh_proxyrc: |
-    export https_proxy={{EXTRA_VAR_PROXY_SERVER_URL}}/
-    export http_proxy={{EXTRA_VAR_PROXY_SERVER_URL}}/
-    export HTTPS_PROXY={{EXTRA_VAR_PROXY_SERVER_URL}}/
-    export HTTP_PROXY={{EXTRA_VAR_PROXY_SERVER_URL}}/
+    export https_proxy={{EXTRA_VAR_PROXY_SERVER_URL}}
+    export http_proxy={{EXTRA_VAR_PROXY_SERVER_URL}}
+    export HTTPS_PROXY={{EXTRA_VAR_PROXY_SERVER_URL}}
+    export HTTP_PROXY={{EXTRA_VAR_PROXY_SERVER_URL}}
 
 zsh_proxyrc_unset: |
     unset https_proxy
