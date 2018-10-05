@@ -41,4 +41,7 @@ dependencies:
     become: true
     vars:
       ruby_version: 2.5.1
+      ruby_install_bundler: true
+      ruby_install_gems: ["tmuxinator"]
+
 
