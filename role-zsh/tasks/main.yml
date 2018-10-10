@@ -6,7 +6,7 @@
     mode: 0644
   # https://github.com/ansible/ansible-modules-core/issues/170
   register: touch_log
-  changed_when: touch_log.diff.before.state != "file" or touch_log.diff.before.mode is defined
+  changed_when: touch_log.diff is defined and (touch_log.diff.before.state != "file" or touch_log.diff.before.mode is defined)
 
 - name: ready copying .zshrc.local
   copy:
