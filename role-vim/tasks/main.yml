@@ -5,7 +5,7 @@
 # https://stackoverflow.com/questions/1676632/whats-a-quick-way-to-comment-uncomment-lines-in-vim
 
 - debug:
-    msg: playbook-vim.yml
+    msg: role-vim/tasks/main.yml
 
 - name: ensure ppa:jonathonf/vim is present
   become: true
