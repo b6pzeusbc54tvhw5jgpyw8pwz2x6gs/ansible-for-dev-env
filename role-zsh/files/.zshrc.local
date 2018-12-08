@@ -30,9 +30,17 @@ eval "$(direnv hook zsh)"
 export EDITOR="/usr/bin/vim"
 export LANG=en_US.UTF-8
 
+# https://stackoverflow.com/questions/39494631/gpg-failed-to-sign-the-data-fatal-failed-to-write-commit-object-git-2-10-0
+export GPG_TTY=$(tty)
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export P4CONFIG=~/.p4config
 
 # BEGIN ANSIBLE MANAGED BLOCK FOR NVM
 # END ANSIBLE MANAGED BLOCK FOR NVM
+
+# oh-my-zsh 플러그인이 적용 안되는 문제로 수동 aws_zsh_completer 설정
+# https://github.com/zsh-users/antigen/issues/583
+# https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html
+source /usr/local/bin/aws_zsh_completer.sh
 
