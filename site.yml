@@ -3,19 +3,9 @@
 ---
 - hosts: all
   roles:
-
-    - { role: role-apt, tags: 'apt', when: "ansible_os_family == 'Debian'" }
-    - { role: role-docker, tags: 'docker' }
-    - { role: role-pip, tags: 'pip' }
+    - { role: role-brew, tags: 'brew' }
     - { role: role-vim, tags: 'vim' }
     - { role: role-git, tags: 'git' }
     - { role: role-node, tags: 'node' }
-
     # command 존재 여부로 zsh plugin 을 설치 하므로 나중에 수행해야 함
     - { role: role-zsh, tags: 'zsh' }
-
-    # 프로비저닝 과정에서 사용할 proxy 셋팅이 아닌
-    # 프로비저닝된 서버 사용자를 위한 proxy 셋팅이므로
-    # 프로비저닝 과정에서 proxy 셋팅이 적용되지 않도록 맨 마지막에 수행
-    - { role: role-proxy, tags: 'proxy' }
-

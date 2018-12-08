@@ -1,11 +1,11 @@
-site.retry
+/site.retry
 
-.galaxy_roles/
-.extraValue.yml
+/.galaxy_roles/
+/.extra-variables.yml
 
-hosts.yml
+/hosts.yml
 
 # vagrant
-ubuntu-xenial-16.04-cloudimg-console.log
-.vagrant
-*.box
+/ubuntu-xenial-16.04-cloudimg-console.log
+/.vagrant
+/*.box

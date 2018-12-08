@@ -13,7 +13,6 @@ dependencies:
       - { name: brew, command: brew }
       - { name: docker, command: docker }
       - { name: docker-compose, command: docker-compose }
-      - git-extras
       - gnu-utils
       - { name: pip, command: pip }
       - python
@@ -36,12 +35,4 @@ dependencies:
       # must be last, don't work on zsh < 4.3.17
       #- { name: zsh-users/zsh-syntax-highlighting, when: "{{ zsh_version | default(false) | version_compare('4.3.17', '>=') }}" }
       - { name: zdharma/fast-syntax-highlighting, when: "{{ zsh_version | default(false) | version_compare('4.3.17', '>=') }}" }
-
-  - role: geerlingguy.ruby
-    become: true
-    vars:
-      ruby_version: 2.5.1
-      ruby_install_bundler: true
-      ruby_install_gems: ["tmuxinator"]
-
 
