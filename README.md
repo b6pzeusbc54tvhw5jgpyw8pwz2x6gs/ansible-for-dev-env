@@ -3,10 +3,7 @@
 ## install role
 
 ```sh
-$ ansible-galaxy install --roles-path=.galaxy_roles geerlingguy.docker
-$ ansible-galaxy install --roles-path=.galaxy_roles geerlingguy.pip
-$ ansible-galaxy install --roles-path=.galaxy_roles geerlingguy.ruby
-$ ansible-galaxy install --roles-path=.galaxy_roles Stouts.python 
+$ git submodule update --init
 ```
 
 ## hosts.yml example
@@ -24,6 +21,11 @@ all:
 
 ```sh
 $ ansible-playbook site.yml -i hosts.yml -k -K -vv
+```
+
+### only specific tagged role
+
+```sh
 $ ansible-playbook site.yml -i hosts.yml -k -K -t git
 ```
 
@@ -32,12 +34,12 @@ To parameterize some configure, you can provide extra variables as
 `--extra-vars` option.
 
 ```sh
-$ ansible-playbook site.yml -i hosts.yml -k -K --extra-vars=@.extraValue.yml
+$ ansible-playbook site.yml -i hosts.yml -k -K --extra-vars=@.extra-variables.yml
 ```
 
 All extra variable examples are below:
 ```yml
-# .extraValue.yml (is gitignored)
+# .extra-variables.yml (is gitignored)
 EXTRA_VAR_UPDATE_VIM_PLUGIN: true                         # default: false
 EXTRA_VAR_PROXY_SERVER_URL: http://123.123.123.123:8080/  # default: ''
 EXTRA_VAR_CA_CERT: |                                      # default: ''
@@ -62,14 +64,4 @@ EXTRA_VAR_CA_CERT: |                                      # default: ''
   -----END CERTIFICATE-----
 ansible_python_interpreter: "/usr/bin/python3"
 ```
-
-## Tip. yaml debugging
-
-```sh
-$ npx js-yaml tasks-vim.yml
-```
-
-## If you want to use VPN
-- https://github.com/hwdsl2/docker-ipsec-vpn-server
-- https://github.com/hwdsl2/setup-ipsec-vpn/blob/master/docs/clients.md#linux-vpn-clients
 

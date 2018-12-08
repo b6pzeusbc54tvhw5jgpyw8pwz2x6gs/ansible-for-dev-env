@@ -1,0 +1,19 @@
+
+- name: Install a brew packages for Darwin
+  homebrew:
+    name:
+      - ripgrep
+      - jq
+      - direnv
+      - thefuck
+      - yarn
+      - the_silver_searcher
+      - fzf
+      - git
+      - fasd
+      - tree
+      - zsh
+      - wget
+    state: latest
+    update_homebrew: no
+
