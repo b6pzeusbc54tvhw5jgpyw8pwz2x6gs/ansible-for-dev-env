@@ -9,10 +9,9 @@ dependencies:
       - vi-mode
       zsh_antigen_bundles:
       - docker-compose
+      - docker
       - { name: command-not-found, when: "{{ ansible_os_family != 'Darwin' }}" } # too slow on OSX
       - { name: brew, command: brew }
-      - { name: docker, command: docker }
-      - { name: docker-compose, command: docker-compose }
       - gnu-utils
       - { name: pip, command: pip }
       - python
