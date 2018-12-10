@@ -19,13 +19,15 @@ alias zz='fasd_cd -d -i' # cd with interactive selection
 PATH=/usr/local/bin:/usr/bin:/bin:/$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
 PATH=$(ruby -e 'print Gem.user_dir')/bin:$PATH
 PATH=$HOME/.fzf/bin:$PATH
-PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
+#PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+PATH="/usr/local/opt/coreutils/bin:$PATH"
 MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
+alias ls='ls -G'
 alias ll='ls -alFG'
-alias la='ls -A'
-alias l='ls -CF'
+alias la='ls -AG'
+alias l='ls -CFG'
 
 eval "$(thefuck --alias)"
 eval "$(direnv hook zsh)"
