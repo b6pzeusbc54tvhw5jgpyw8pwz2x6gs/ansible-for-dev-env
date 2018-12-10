@@ -16,12 +16,12 @@ alias zz='fasd_cd -d -i' # cd with interactive selection
 ####################################################################
 # etc
 
-PATH=/usr/local/bin:/usr/bin:/bin:/$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
+PATH=/usr/local/opt/coreutils/bin:$PATH
+PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 PATH=$(ruby -e 'print Gem.user_dir')/bin:$PATH
 PATH=$HOME/.fzf/bin:$PATH
+PATH=/usr/local/bin:/usr/bin:/bin:/$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
 
-#PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-PATH="/usr/local/opt/coreutils/bin:$PATH"
 MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
 alias ls='ls -G'
@@ -48,4 +48,7 @@ export P4CONFIG=~/.p4config
 # https://github.com/zsh-users/antigen/issues/583
 # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html
 source /usr/local/bin/aws_zsh_completer.sh
+
+# https://unix.stackexchange.com/questions/86012/what-is-the-purpose-of-the-hash-command
+export PATH=$PATH
 
