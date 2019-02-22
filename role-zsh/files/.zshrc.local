@@ -5,7 +5,7 @@
 eval "$(fasd --init auto)"
 alias a='fasd -a'        # any
 alias s='fasd -si'       # show / search / select
-alias d='fasd -d'        # directory
+# alias d='fasd -d'        # directory
 alias f='fasd -f'        # file
 alias sd='fasd -sid'     # interactive directory selection
 alias sf='fasd -sif'     # interactive file selection
@@ -28,6 +28,10 @@ alias ls='ls -G'
 alias ll='ls -alFG'
 alias la='ls -AG'
 alias l='ls -CFG'
+
+alias g='git'
+alias d='docker'
+alias dc='docker-compose'
 
 eval "$(thefuck --alias)"
 eval "$(direnv hook zsh)"
