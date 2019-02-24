@@ -65,3 +65,31 @@ EXTRA_VAR_CA_CERT: |                                      # default: ''
 ansible_python_interpreter: "/usr/bin/python3"
 ```
 
+
+
+## 별도 MACOS 설정
+
+### macOS Sierra에서 원화(₩) 대신 백 쿼트(`) 입력하기
+
+```bash
+#!/bin/bash
+if [ -f ~/Library/KeyBindings/DefaultkeyBinding.dict ]; then
+	echo "~/Library/KeyBindings/DefaultkeyBinding.dict already exists"
+	exit -1
+fi
+
+mkdir -p ~/Library/KeyBindings
+cat << EOF > ~/Library/KeyBindings/DefaultkeyBinding.dict 
+{
+    "₩" = ("insertText:", "\`");
+}
+EOF
+
+echo "Done."
+```
+
+출처:
+- https://ani2life.com/wp/?p=1753
+- https://gist.github.com/redism/43bc51cab62269fa97a220a7bb5e1103
+
+
