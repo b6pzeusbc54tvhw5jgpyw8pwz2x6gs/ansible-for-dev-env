@@ -93,3 +93,54 @@ echo "Done."
 - https://gist.github.com/redism/43bc51cab62269fa97a220a7bb5e1103
 
 
+
+### VIM Editor 사용시 한글 입력 후 command mode 로 나왔을 때 자동 영문 전환
+[Hammerspoon][hammerspoon] 스크립트 사용
+
+~/.hammerspoon/init.lua:
+```
+local caps_mode = hs.hotkey.modal.new()
+local inputEnglish = "com.apple.keylayout.ABC"
+
+local function has_value (tab, val)
+    for index, value in ipairs(tab) do
+        if value == val then
+            return true
+        end
+    end
+    return false
+end
+
+vimSwitchMode = hs.hotkey.bind({'control'}, 'c', function()
+  -- print("in off_caps_mode")
+  local win = hs.window.focusedWindow()
+  local app = win:application()
+  local title = app:title()
+
+  -- print( "win:title: " .. win:title() )
+  -- print( "path: " .. app:path() )
+  -- print( "pid: " .. app:pid() )
+  -- print( "title: " .. title )
+  caps_mode:exit()
+
+  -- print( input_source )
+  local input_source = hs.keycodes.currentSourceID()
+  supportTitleArr = { 'iTerm2', 'Code', 'IntelliJ IDEA' }
+
+  if (input_source ~= inputEnglish and has_value(supportTitleArr,title)) then
+    -- print("switch input and vim mode")
+    hs.eventtap.keyStroke({}, 'right')
+    hs.keycodes.currentSourceID(inputEnglish)
+    hs.eventtap.keyStroke({}, 'escape')
+  else
+    vimSwitchMode:disable()
+    hs.eventtap.keyStroke({'control'}, 'c')
+    vimSwitchMode:enable()
+  end
+end)
+
+-- https://johngrib.github.io/blog/2017/08/07/hammerspoon-tutorial-05/
+
+```
+
+[hammerspoon]: https://www.hammerspoon.org/
