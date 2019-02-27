@@ -143,4 +143,18 @@ end)
 
 ```
 
+### capslock as 하이퍼키(command + option + control + shift)
+[Karabiner][karabiner]
+
+### 특정 input method 전환 핫키 설정
+https://github.com/utatti/kawa
+
+### Active specific app
+[keyboardmaestro][keyboardmaestro]
+
+### Snippets
+https://www.alfredapp.com/
+
 [hammerspoon]: https://www.hammerspoon.org/
+[karabiner]: https://pqrs.org/osx/karabiner/
+[keyboardmaestro]: https://www.keyboardmaestro.com/main/
