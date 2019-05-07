@@ -101,6 +101,9 @@ echo "Done."
 ```
 local caps_mode = hs.hotkey.modal.new()
 local inputEnglish = "com.apple.keylayout.ABC"
+local input2SetKorean = "com.apple.inputmethod.Korean.2SetKorean"
+local inputGureumQwerty = "org.youknowone.inputmethod.Gureum.qwerty"
+local inputHan390 = "org.youknowone.inputmethod.Gureum.han390"
 
 local function has_value (tab, val)
     for index, value in ipairs(tab) do
@@ -123,14 +126,15 @@ vimSwitchMode = hs.hotkey.bind({'control'}, 'c', function()
   -- print( "title: " .. title )
   caps_mode:exit()
 
-  -- print( input_source )
   local input_source = hs.keycodes.currentSourceID()
   supportTitleArr = { 'iTerm2', 'Code', 'IntelliJ IDEA' }
+  -- print( "input_source" )
+  -- print( input_source )
 
-  if (input_source ~= inputEnglish and has_value(supportTitleArr,title)) then
+  if ((input_source == input2SetKorean or input_source == inputHan390) and has_value(supportTitleArr,title)) then
     -- print("switch input and vim mode")
     hs.eventtap.keyStroke({}, 'right')
-    hs.keycodes.currentSourceID(inputEnglish)
+    hs.keycodes.currentSourceID(input_source == input2SetKorean and inputEnglish or inputGureumQwerty)
     hs.eventtap.keyStroke({}, 'escape')
   else
     vimSwitchMode:disable()
@@ -138,9 +142,6 @@ vimSwitchMode = hs.hotkey.bind({'control'}, 'c', function()
     vimSwitchMode:enable()
   end
 end)
-
--- https://johngrib.github.io/blog/2017/08/07/hammerspoon-tutorial-05/
-
 ```
 
 ### capslock as 하이퍼키(command + option + control + shift)
