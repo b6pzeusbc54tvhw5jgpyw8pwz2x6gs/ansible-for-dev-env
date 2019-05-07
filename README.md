@@ -155,6 +155,10 @@ https://github.com/utatti/kawa
 ### Snippets
 https://www.alfredapp.com/
 
+### iTerm color scheme
+- https://iterm2colorschemes.com/
+- recommend: NightLion v2
+
 [hammerspoon]: https://www.hammerspoon.org/
 [karabiner]: https://pqrs.org/osx/karabiner/
 [keyboardmaestro]: https://www.keyboardmaestro.com/main/
