@@ -17,6 +17,7 @@ set relativenumber
 set backupdir=~/vimBackup
 set dir=~/vimBackup
 set t_Co=256
+set encoding=utf-8
 
 " some short cut
 nnoremap ,q :q<CR>
