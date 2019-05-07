@@ -4,7 +4,7 @@
 - name: "Install nvm"
   git:
     repo: https://github.com/creationix/nvm.git
-    version: v0.33.11
+    version: v0.34.0
     dest: "{{ ansible_env.HOME }}/.nvm"
 
 - name: "check if node 10 is installed"
