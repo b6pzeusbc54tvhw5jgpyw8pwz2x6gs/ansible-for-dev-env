@@ -24,10 +24,10 @@ PATH=/usr/local/bin:/usr/bin:/bin:/$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$P
 
 MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
-alias ls='ls -G'
-alias ll='ls -alFG'
-alias la='ls -AG'
-alias l='ls -CFG'
+eval $( dircolors -b $HOME/.dircolors/LS_COLORS ) >> ~/.zshrc
+alias ls='/usr/local/bin/gls --color=auto'
+alias l='/usr/local/bin/gls --color=auto'
+alias ll='/usr/local/bin/gls -alF --color=auto'
 
 alias g='git'
 alias d='docker'

@@ -33,6 +33,12 @@
   command: "~{{ ansible_user_id }}/.fzf/install --key-bindings --completion --no-update-rc"
   when: fzf_install_result.changed
 
+- name: "Clone LS_COLORS"
+  git:
+    repo: "https://github.com/trapd00r/LS_COLORS"
+    update: false
+    dest: "~{{ ansible_user_id }}/.dircolors"
+
 - name: install ca package on rhel systems
   yum:
     name: ca-certificates

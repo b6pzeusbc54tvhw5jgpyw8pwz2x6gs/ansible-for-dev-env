@@ -14,7 +14,7 @@ all:
     localhost:
       ansible_port: 22
       ansible_host: 127.0.0.1
-      ansible_user: ssohjiro
+      ansible_user: <username>
 ```
 
 ## excute
