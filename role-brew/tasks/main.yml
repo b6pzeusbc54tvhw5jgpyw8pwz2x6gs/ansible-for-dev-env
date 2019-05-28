@@ -1,4 +1,3 @@
-
 - name: Install a brew packages for Darwin
   homebrew:
     name:
@@ -16,5 +15,23 @@
       - wget
       - coreutils
     state: latest
-    update_homebrew: no
+    update_homebrew: yes
+
+- name: Install a brew cask app
+  homebrew_cask:
+    name:
+      - firefox
+      - google-chrome
+      - slack
+      - visual-studio-code
+      - skitch
+      - webtorrent
+      - keyboard-maestro
+      - karabiner-elements
+      - alfred
+      - send-anywhere
+      - notion
+      - obs
+    state: present
+    update_homebrew: yes
 
