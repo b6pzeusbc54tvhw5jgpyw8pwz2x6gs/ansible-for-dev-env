@@ -14,24 +14,65 @@
       - zsh
       - wget
       - coreutils
+      - curl
     state: latest
     update_homebrew: yes
 
-- name: Install a brew cask app
+- name: copying hammerspoon init.lua
+  copy:
+    src: init.lua
+    dest: ~/.hammerspoon/init.lua
+    mode: 0644
+
+- name: copying karabiner.json
+  copy:
+    src: karabiner.json
+    dest: ~/.config/karabiner/karabiner.json
+    mode: 0644
+
+- name: Install a brew cask app - 1
   homebrew_cask:
     name:
-      - firefox
+      #- lastpass  # app store version 이 좋다
       - google-chrome
-      - slack
       - visual-studio-code
       - skitch
-      - webtorrent
       - keyboard-maestro
+    state: present
+    update_homebrew: yes
+    sudo_password: "{{ ansible_ssh_pass }}"
+
+- name: Install a brew cask app - 2
+  homebrew_cask:
+    name:
       - karabiner-elements
-      - alfred
       - send-anywhere
+      - iterm2
+      - firefox
+    state: present
+    update_homebrew: no
+    sudo_password: "{{ ansible_ssh_pass }}"
+
+
+- name: Install a brew cask app - 3
+  homebrew_cask:
+    name:
+      - slack
+      - webtorrent
       - notion
       - obs
     state: present
-    update_homebrew: yes
+    update_homebrew: no
+    sudo_password: "{{ ansible_ssh_pass }}"
+
+- name: Install a brew cask app - 4
+  homebrew_cask:
+    name:
+      - docker
+      - alfred
+      - hammerspoon
+      - bettertouchtool
+    state: present
+    update_homebrew: no
+    sudo_password: "{{ ansible_ssh_pass }}"
 

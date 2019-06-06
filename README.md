@@ -1,13 +1,16 @@
 # ansible-for-macos
 
-## install role
+## preparation
 
-```sh
+```shell
+$ brew install ansible
+$ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
 $ git submodule update --init
 ```
 
-## hosts.yml example
+## write your hosts.yml
 
+example:
 ```yml
 all:
   hosts:
@@ -21,11 +24,8 @@ all:
 
 ```sh
 $ ansible-playbook site.yml -i hosts.yml -k -K -vv
-```
 
-### only specific tagged role
-
-```sh
+## or you can excute only specific tagged task, using -t
 $ ansible-playbook site.yml -i hosts.yml -k -K -t git
 ```
 
@@ -65,11 +65,42 @@ EXTRA_VAR_CA_CERT: |                                      # default: ''
 ansible_python_interpreter: "/usr/bin/python3"
 ```
 
+## Details
 
+### Keyboard maestro
+[keyboardmaestro][keyboardmaestro] 매크로 설정 import:
 
-## 별도 MACOS 설정
+```shell
+$ open config-backup.kmmacros
+```
 
-### macOS Sierra에서 원화(₩) 대신 백 쿼트(`) 입력하기
+Keyboard maestro 를 설치후 위 커맨드로 import 후
+disable 된 매크로들을 enable 해줘야함
+
+### hammerspoon
+[Hammerspoon][hammerspoon] lua 스크립트 사용으로,
+VIM Editor 사용시 한글 입력 후 command mode 로 나왔을 때 자동 영문 전환
+
+### Karabiner element
+[Karabiner][karabiner] 설정들:
+
+- capslock as 하이퍼키(command + option + control + shift)
+- VIM editor 처럼 커서 이동시키기 (fn + hjkl wb 04)
+
+## 수동 설정
+
+### Snippets
+https://www.alfredapp.com/
+
+### iTerm color scheme
+- https://iterm2colorschemes.com/
+- recommend: NightLion v2, Tango Dark
+
+[hammerspoon]: https://www.hammerspoon.org/
+[keyboardmaestro]: https://www.keyboardmaestro.com/main/
+[karabiner]: https://pqrs.org/osx/karabiner/
+
+### macOS Sierra(Mojave)에서 원화(₩) 대신 백 쿼트(`) 입력하기
 
 ```bash
 #!/bin/bash
@@ -92,74 +123,4 @@ echo "Done."
 - https://ani2life.com/wp/?p=1753
 - https://gist.github.com/redism/43bc51cab62269fa97a220a7bb5e1103
 
-
-
-### VIM Editor 사용시 한글 입력 후 command mode 로 나왔을 때 자동 영문 전환
-[Hammerspoon][hammerspoon] 스크립트 사용
-
-~/.hammerspoon/init.lua:
-```
-local caps_mode = hs.hotkey.modal.new()
-local inputEnglish = "com.apple.keylayout.ABC"
-local input2SetKorean = "com.apple.inputmethod.Korean.2SetKorean"
-local inputGureumQwerty = "org.youknowone.inputmethod.Gureum.qwerty"
-local inputHan390 = "org.youknowone.inputmethod.Gureum.han390"
-
-local function has_value (tab, val)
-    for index, value in ipairs(tab) do
-        if value == val then
-            return true
-        end
-    end
-    return false
-end
-
-vimSwitchMode = hs.hotkey.bind({'control'}, 'c', function()
-  -- print("in off_caps_mode")
-  local win = hs.window.focusedWindow()
-  local app = win:application()
-  local title = app:title()
-
-  -- print( "win:title: " .. win:title() )
-  -- print( "path: " .. app:path() )
-  -- print( "pid: " .. app:pid() )
-  -- print( "title: " .. title )
-  caps_mode:exit()
-
-  local input_source = hs.keycodes.currentSourceID()
-  supportTitleArr = { 'iTerm2', 'Code', 'IntelliJ IDEA' }
-  -- print( "input_source" )
-  -- print( input_source )
-
-  if ((input_source == input2SetKorean or input_source == inputHan390) and has_value(supportTitleArr,title)) then
-    -- print("switch input and vim mode")
-    hs.eventtap.keyStroke({}, 'right')
-    hs.keycodes.currentSourceID(input_source == input2SetKorean and inputEnglish or inputGureumQwerty)
-    hs.eventtap.keyStroke({}, 'escape')
-  else
-    vimSwitchMode:disable()
-    hs.eventtap.keyStroke({'control'}, 'c')
-    vimSwitchMode:enable()
-  end
-end)
-```
-
-### capslock as 하이퍼키(command + option + control + shift)
-[Karabiner][karabiner]
-
-### 특정 input method 전환 핫키 설정
-https://github.com/utatti/kawa
-
-### Active specific app
-[keyboardmaestro][keyboardmaestro]
-
-### Snippets
-https://www.alfredapp.com/
-
-### iTerm color scheme
-- https://iterm2colorschemes.com/
-- recommend: NightLion v2
-
-[hammerspoon]: https://www.hammerspoon.org/
-[karabiner]: https://pqrs.org/osx/karabiner/
-[keyboardmaestro]: https://www.keyboardmaestro.com/main/
+참고: 구름 입력기 사용하면 안해도 될 듯!?

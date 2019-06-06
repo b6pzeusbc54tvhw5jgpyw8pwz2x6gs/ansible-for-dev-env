@@ -21,6 +21,7 @@ PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 PATH=$(ruby -e 'print Gem.user_dir')/bin:$PATH
 PATH=$HOME/.fzf/bin:$PATH
 PATH=/usr/local/bin:/usr/bin:/bin:/$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
+PATH="/usr/local/opt/curl/bin:$PATH"
 
 MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
