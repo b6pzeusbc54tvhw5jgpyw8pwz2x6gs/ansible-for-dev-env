@@ -19,7 +19,6 @@ alias zz='fasd_cd -d -i' # cd with interactive selection
 PATH=/usr/local/opt/coreutils/bin:$PATH
 PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 PATH=$(ruby -e 'print Gem.user_dir')/bin:$PATH
-PATH=$HOME/.fzf/bin:$PATH
 PATH=/usr/local/bin:/usr/bin:/bin:/$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
 PATH="/usr/local/opt/curl/bin:$PATH"
 
@@ -42,7 +41,6 @@ export LANG=en_US.UTF-8
 # https://stackoverflow.com/questions/39494631/gpg-failed-to-sign-the-data-fatal-failed-to-write-commit-object-git-2-10-0
 export GPG_TTY=$(tty)
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export P4CONFIG=~/.p4config
 
 # BEGIN ANSIBLE MANAGED BLOCK FOR NVM
