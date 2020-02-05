@@ -1,7 +1,7 @@
 /site.retry
 
 /.galaxy_roles/
-/.extra-variables.yml
+/extra-variables.yml
 
 /hosts.yml
 
