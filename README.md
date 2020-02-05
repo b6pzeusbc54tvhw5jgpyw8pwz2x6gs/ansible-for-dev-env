@@ -5,6 +5,7 @@
 ```shell
 $ brew install ansible
 $ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
+$ ansible-galaxy install --roles-path=.galaxy_roles viasite-ansible.zsh
 $ git submodule update --init
 ```
 
