@@ -37,7 +37,6 @@ alias dc='docker-compose'
 eval "$(thefuck --alias)"
 eval "$(direnv hook zsh)"
 
-export EDITOR="/usr/bin/vim"
 export LANG=en_US.UTF-8
 
 # https://stackoverflow.com/questions/39494631/gpg-failed-to-sign-the-data-fatal-failed-to-write-commit-object-git-2-10-0
@@ -57,3 +56,5 @@ source /usr/local/bin/aws_zsh_completer.sh
 # https://unix.stackexchange.com/questions/86012/what-is-the-purpose-of-the-hash-command
 export PATH=$PATH
 
+# to use case-sensitive completion
+CASE_SENSITIVE="true"

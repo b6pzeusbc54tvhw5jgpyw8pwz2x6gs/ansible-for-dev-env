@@ -1,7 +1,6 @@
 ---
 dependencies:
-  - role: ansible-role-zsh
-    become: true
+  - role: viasite-ansible.zsh
     vars:
       zsh_autosuggestions_bind_key: "^ "
       zsh_antigen_theme: robbyrussell
@@ -10,6 +9,7 @@ dependencies:
       zsh_antigen_bundles:
       - docker-compose
       - docker
+      - fancy-ctrl-z
       - { name: command-not-found, when: "{{ ansible_os_family != 'Darwin' }}" } # too slow on OSX
       - { name: brew, command: brew }
       - gnu-utils
@@ -26,12 +26,12 @@ dependencies:
       - zsh_reload
 
       # on zsh 4.3.10 autosuggestions breaks multiline commands with \
-      - { name: zsh-users/zsh-autosuggestions, when: "{{ zsh_version | default(false) | version_compare('5.0', '>=') }}" }
+      - { name: zsh-users/zsh-autosuggestions, when: "{{ zsh_version | default(false) is version('5.0', '>=') }}" }
       - popstas/zsh-command-time
       - { name: unixorn/autoupdate-antigen.zshplugin, when: "{{ zsh_update_interval > 0 }}" }
       - urbainvaes/fzf-marks # replaces jump plugin, mark, jump and Ctrl+G
       - "{{ fzf_widgets }}"
       # must be last, don't work on zsh < 4.3.17
-      #- { name: zsh-users/zsh-syntax-highlighting, when: "{{ zsh_version | default(false) | version_compare('4.3.17', '>=') }}" }
-      - { name: zdharma/fast-syntax-highlighting, when: "{{ zsh_version | default(false) | version_compare('4.3.17', '>=') }}" }
+      #- { name: zsh-users/zsh-syntax-highlighting, when: "{{ zsh_version | default(false) is version('4.3.17', '>=') }}" }
+      - { name: zdharma/fast-syntax-highlighting, when: "{{ zsh_version | default(false) is version('4.3.17', '>=') }}" }
 

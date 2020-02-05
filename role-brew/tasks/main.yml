@@ -7,14 +7,11 @@
       - thefuck
       - yarn
       - the_silver_searcher
-      - fzf
-      - git
       - fasd
       - tree
-      - zsh
-      - wget
       - coreutils
       - curl
+      - fzf
     state: latest
     update_homebrew: yes
 

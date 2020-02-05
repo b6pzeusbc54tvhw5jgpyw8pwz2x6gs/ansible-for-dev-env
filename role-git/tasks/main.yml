@@ -1,5 +1,6 @@
 
-- debug:
+- name: log
+  debug:
     msg: task-git.yml
 
 - name: touch .gitconfig
@@ -18,22 +19,17 @@
     mode: 0644
   register: gitconfig_copy_result
 
-- name: backup .gitconfig
-  copy:
-    src: ~/.gitconfig
-    dest: ~/.gitconfig.backup
-    mode: 0644
-  when: gitconfig_copy_result.changed
-
 - name: copy .gitconfig
   copy:
     src: .gitconfig
     dest: ~/.gitconfig
-    mode: 0644
+    mode: '0644'
+    backup: yes
   when: gitconfig_copy_result.changed
 
 # marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다
-- blockinfile:
+- name: set hide-dirty in ~/.gitconfig
+  blockinfile:
     marker: "  # {mark} ANSIBLE MANAGED BLOCK FOR GIT_HIDE_DIRTY"
     path: ~/.gitconfig
     content: "  hide-dirty = {{ '1' if ansible_env.USER == 'vagrant' else '0' }}"

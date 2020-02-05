@@ -19,19 +19,9 @@
   copy:
     src: .zshrc.local
     dest: "~{{ ansible_user_id }}/.zshrc.local"
-    mode: 0644
+    mode: '0644'
+    backup: yes
   when: zshrc_local_copy_result.changed
-
-- name: "Clone fzf"
-  git:
-    repo: "https://github.com/junegunn/fzf.git"
-    update: false
-    dest: "~{{ ansible_user_id }}/.fzf"
-  register: fzf_install_result
-
-- name: "Install fzf"
-  command: "~{{ ansible_user_id }}/.fzf/install --key-bindings --completion --no-update-rc"
-  when: fzf_install_result.changed
 
 - name: "Clone LS_COLORS"
   git:
