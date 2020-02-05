@@ -18,7 +18,14 @@
     mode: 0644
   register: gitconfig_copy_result
 
-- name: copying .gitconfig
+- name: backup .gitconfig
+  copy:
+    src: ~/.gitconfig
+    dest: ~/.gitconfig.backup
+    mode: 0644
+  when: gitconfig_copy_result.changed
+
+- name: copy .gitconfig
   copy:
     src: .gitconfig
     dest: ~/.gitconfig
