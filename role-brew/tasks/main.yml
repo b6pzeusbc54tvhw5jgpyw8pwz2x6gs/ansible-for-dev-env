@@ -15,6 +15,12 @@
     state: latest
     update_homebrew: yes
 
+- name: create hammerspoon directory
+  file:
+    path: ~/.hammerspoon
+    state: directory
+    mode: 0755
+
 - name: copying hammerspoon init.lua
   copy:
     src: init.lua
