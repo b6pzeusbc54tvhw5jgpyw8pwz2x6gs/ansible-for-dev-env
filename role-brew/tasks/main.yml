@@ -1,3 +1,29 @@
+- name: create ~/.hammerspoon directory
+  file:
+    path: ~/.hammerspoon
+    state: directory
+    mode: 0755
+
+- name: copying hammerspoon init.lua
+  copy:
+    backup: yes
+    src: init.lua
+    dest: ~/.hammerspoon/init.lua
+    mode: 0644
+
+- name: create ~/.config/karabiner directory
+  file:
+    path: ~/.config/karabiner
+    state: directory
+    mode: 0755
+
+- name: copying karabiner.json
+  copy:
+    backup: yes
+    src: karabiner.json
+    dest: ~/.config/karabiner/karabiner.json
+    mode: 0644
+
 - name: Install a brew packages for Darwin
   homebrew:
     name:
@@ -14,18 +40,6 @@
       - fzf
     state: latest
     update_homebrew: yes
-
-- name: copying hammerspoon init.lua
-  copy:
-    src: init.lua
-    dest: ~/.hammerspoon/init.lua
-    mode: 0644
-
-- name: copying karabiner.json
-  copy:
-    src: karabiner.json
-    dest: ~/.config/karabiner/karabiner.json
-    mode: 0644
 
 - name: Install a brew cask app - 1
   homebrew_cask:
