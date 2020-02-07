@@ -56,3 +56,5 @@ export PATH=$PATH
 
 # to use case-sensitive completion
 CASE_SENSITIVE="true"
+
+antigen apply

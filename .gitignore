@@ -1,9 +1,9 @@
 /site.retry
 
 /.galaxy_roles/
-/extra-variables.yml
 
 /hosts.yml
+/extra-vars-user.yml
 
 # vagrant
 /ubuntu-xenial-16.04-cloudimg-console.log

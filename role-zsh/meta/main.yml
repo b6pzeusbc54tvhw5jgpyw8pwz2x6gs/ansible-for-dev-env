@@ -37,4 +37,3 @@ dependencies:
       # must be last, don't work on zsh < 4.3.17
       #- { name: zsh-users/zsh-syntax-highlighting, when: "{{ zsh_version | default(false) is version('4.3.17', '>=') }}" }
       - { name: zdharma/fast-syntax-highlighting, when: "{{ zsh_version | default(false) is version('4.3.17', '>=') }}" }
-

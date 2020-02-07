@@ -1,4 +1,27 @@
 
+- name: "copy {{ zsh_config }} to ~/.zshrc.tmp"
+  copy:
+    src: "{{ zsh_config }}"
+    dest: "~{{ zsh_user }}/.zshrc.tmp"
+    mode: '0644'
+  changed_when: false
+
+- name: comment out 'antigen apply' in ~/.zshrc.tmp
+  lineinfile:
+    path: "~{{ zsh_user }}/.zshrc.tmp"
+    regexp: '^antigen apply$'
+    line: |
+      # In the zshrc.local has antigen apply. Check the ~/.zshrc.local
+      # antizen apply
+  changed_when: false
+
+- name: copy ~/.zshrc.tmp to ~/.zshrc
+  copy:
+    src: "~{{ zsh_user }}/.zshrc.tmp"
+    dest: "~{{ zsh_user }}/.zshrc"
+    mode: '0644'
+    backup: yes
+
 - name: touch .zshrc.local
   file:
     path: "{{ ansible_env.HOME }}/.zshrc.local"
@@ -8,20 +31,20 @@
   register: touch_log
   changed_when: touch_log.diff is defined and (touch_log.diff.before.state != "file" or touch_log.diff.before.mode is defined)
 
-- name: ready copying .zshrc.local
+- name: create .zshrc.local.before_ansible_manage_line
   copy:
     src: .zshrc.local
     dest: "~{{ ansible_user_id }}/.zshrc.local.before_ansible_manage_line"
     mode: 0644
-  register: zshrc_local_copy_result
+  register: zshrc_local_before_ansible_manage_line_copy_result
 
 - name: copy .zshrc.local
   copy:
-    src: .zshrc.local
+    src: "~{{ ansible_user_id }}/.zshrc.local.before_ansible_manage_line"
     dest: "~{{ ansible_user_id }}/.zshrc.local"
     mode: '0644'
     backup: yes
-  when: zshrc_local_copy_result.changed
+  when: zshrc_local_before_ansible_manage_line_copy_result.changed
 
 - name: "Clone LS_COLORS"
   git:
@@ -29,26 +52,12 @@
     update: false
     dest: "~{{ ansible_user_id }}/.dircolors"
 
-- name: install ca package on rhel systems
-  yum:
-    name: ca-certificates
-    state: present
-  when: ansible_os_family == "RedHat"
-- name: install ca package on debian systems
-  apt:
-    name: ca-certificates
-    state: present
-    update_cache: yes
-  when: ansible_os_family == "Debian"
-  become: true
-- name: enable dynamic ca configuration on rhel6
-  shell: /bin/update-ca-trust enable
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
-
 # marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다
-- blockinfile:
+- name: insert load nvm script
+  blockinfile:
     marker: '# {mark} ANSIBLE MANAGED BLOCK FOR NVM'
-    path: ~/.zshrc.local
+    path: "~{{ ansible_user_id }}/.zshrc.local"
+    mode: 0644
     content: |-
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

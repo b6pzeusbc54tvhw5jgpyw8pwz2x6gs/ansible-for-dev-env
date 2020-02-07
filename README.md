@@ -4,7 +4,7 @@ Ansible playbook and guide for quickly provisioning personal work environment wh
 ## Preparation
 
 ```shell
-$ brew install ansible
+$ brew install ansible python3
 $ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
 $ ansible-galaxy install --roles-path=.galaxy_roles viasite-ansible.zsh
 ```
@@ -36,10 +36,10 @@ Are you sure you want to continue connecting (yes/no)?
 ## Execute ansible-playbook
 
 ```sh
-$ ansible-playbook site.yml -i hosts.yml -k -K -vv
+$ ansible-playbook site.yml -i hosts.yml -k -K -v --extra-vars=@extra-vars.yml
 
 ## or you can excute only specific tagged task, using -t
-$ ansible-playbook site.yml -i hosts.yml -k -K -t git
+$ ansible-playbook site.yml -i hosts.yml -k -K -v --extra-vars=@extra-vars.yml -t git
 ```
 
 ### Extra variable
@@ -47,14 +47,13 @@ To parameterize some configure, you can provide extra variables as
 `--extra-vars` option.
 
 ```sh
-$ ansible-playbook site.yml -i hosts.yml -k -K --extra-vars=@extra-variables.yml
+$ ansible-playbook site.yml -i hosts.yml -k -K -v --extra-vars=@extra-vars.yml --extra-vars=@extra-vars-user.yml
 ```
 
 All extra variable examples are below:
 ```yml
-# extra-variables.yml (is gitignored)
-EXTRA_VAR_UPDATE_VIM_PLUGIN: true                         # default: false
-ansible_python_interpreter: "/usr/local/bin/python3"
+# extra-vars-user.yml (is gitignored)
+EXTRA_VAR_UPDATE_VIM_PLUGIN: true     # default: false
 ```
 
 ## Manual settings
