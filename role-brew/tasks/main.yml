@@ -27,6 +27,17 @@
 - name: Install a brew packages for Darwin
   homebrew:
     name:
+      - fzf
+    state: latest
+  register: fzf
+
+- name: fzf install
+  shell: "$(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc"
+  when: fzf.changed
+
+- name: Install a brew packages for Darwin
+  homebrew:
+    name:
       - ripgrep
       - jq
       - direnv
@@ -37,7 +48,6 @@
       - tree
       - coreutils
       - curl
-      - fzf
     state: latest
     update_homebrew: yes
 

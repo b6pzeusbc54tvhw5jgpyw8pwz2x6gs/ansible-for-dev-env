@@ -1,50 +1,80 @@
 
-- name: "copy {{ zsh_config }} to ~/.zshrc.tmp"
+- name: "copy {{ zsh_config }} to ~/.zshrc.viasite-angible.zsh.tmp"
   copy:
     src: "{{ zsh_config }}"
-    dest: "~{{ zsh_user }}/.zshrc.tmp"
+    dest: "~{{ zsh_user }}/.zshrc.viasite-angible.zsh.tmp"
     mode: '0644'
   changed_when: false
 
-- name: comment out 'antigen apply' in ~/.zshrc.tmp
+- name: comment out 'antigen apply' in ~/.zshrc.viasite-angible.zsh.tmp
   lineinfile:
-    path: "~{{ zsh_user }}/.zshrc.tmp"
+    path: "~{{ zsh_user }}/.zshrc.viasite-angible.zsh.tmp"
     regexp: '^antigen apply$'
     line: |
-      # In the zshrc.local has antigen apply. Check the ~/.zshrc.local
-      # antizen apply
+      # Check below user define configure in this file
+      # antigen apply
   changed_when: false
 
-- name: copy ~/.zshrc.tmp to ~/.zshrc
+- name: copy ~/.zshrc.viasite-angible.zsh.tmp to ~/.zshrc.viasite-angible.zsh
   copy:
-    src: "~{{ zsh_user }}/.zshrc.tmp"
-    dest: "~{{ zsh_user }}/.zshrc"
+    src: "~{{ zsh_user }}/.zshrc.viasite-angible.zsh.tmp"
+    dest: "~{{ zsh_user }}/.zshrc.viasite-angible.zsh"
     mode: '0644'
-    backup: yes
+  register: zshrc_viasite_angible_zsh
 
-- name: touch .zshrc.local
+- name: touch .zshrc
   file:
-    path: "{{ ansible_env.HOME }}/.zshrc.local"
+    path: "{{ ansible_env.HOME }}/.zshrc"
     state: touch
     mode: 0644
   # https://github.com/ansible/ansible-modules-core/issues/170
   register: touch_log
   changed_when: touch_log.diff is defined and (touch_log.diff.before.state != "file" or touch_log.diff.before.mode is defined)
 
-- name: create .zshrc.local.before_ansible_manage_line
+- name: create ~/.zshrc.user
   copy:
-    src: .zshrc.local
-    dest: "~{{ ansible_user_id }}/.zshrc.local.before_ansible_manage_line"
+    src: .zshrc.user
+    dest: "~{{ ansible_user_id }}/.zshrc.user"
     mode: 0644
-  register: zshrc_local_before_ansible_manage_line_copy_result
+  register: zshrc_user_file
 
-- name: copy .zshrc.local
+- name: copy ~/.zshrc.user into ~/.zshrc
   copy:
-    src: "~{{ ansible_user_id }}/.zshrc.local.before_ansible_manage_line"
-    dest: "~{{ ansible_user_id }}/.zshrc.local"
+    src: "~{{ ansible_user_id }}/.zshrc.user"
+    dest: "~{{ ansible_user_id }}/.zshrc"
     mode: '0644'
     backup: yes
-  when: zshrc_local_before_ansible_manage_line_copy_result.changed
+  when: zshrc_user_file.changed or zshrc_viasite_angible_zsh.changed
+  register: zshrc
+
+- name: insert viasite-angible.zsh into ~/.zshrc
+  blockinfile:
+    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR viasite-ansible.zsh'
+    path: "~{{ ansible_user_id }}/.zshrc"
+    mode: 0644
+    block: "{{ lookup('file', '~/.zshrc.viasite-angible.zsh') }}"
+  when: zshrc_user_file.changed or zshrc_viasite_angible_zsh.changed
+
+# marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다
+- name: insert load nvm script
+  blockinfile:
+    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR NVM'
+    path: "~{{ ansible_user_id }}/.zshrc"
+    mode: 0644
+    content: |-
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+  when: zshrc_user_file.changed or zshrc_viasite_angible_zsh.changed
+
+- name: insert load fzf script
+  blockinfile:
+    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR FZF'
+    path: "~{{ ansible_user_id }}/.zshrc"
+    mode: 0644
+    content: |-
+      [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+  when: zshrc_user_file.changed or zshrc_viasite_angible_zsh.changed
 
 - name: "Clone LS_COLORS"
   git:
@@ -52,16 +82,6 @@
     update: false
     dest: "~{{ ansible_user_id }}/.dircolors"
 
-# marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다
-- name: insert load nvm script
-  blockinfile:
-    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR NVM'
-    path: "~{{ ansible_user_id }}/.zshrc.local"
-    mode: 0644
-    content: |-
-      export NVM_DIR="$HOME/.nvm"
-      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 - name: copy vagrant public key
   when: ansible_env.USER == "vagrant"

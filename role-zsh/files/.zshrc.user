@@ -1,3 +1,9 @@
+# BEGIN ANSIBLE MANAGED BLOCK FOR viasite-ansible.zsh
+# END ANSIBLE MANAGED BLOCK FOR viasite-ansible.zsh
+
+# From here, user define configure
+
+antigen apply
 
 ####################################################################
 # fasd
@@ -46,6 +52,11 @@ export P4CONFIG=~/.p4config
 # BEGIN ANSIBLE MANAGED BLOCK FOR NVM
 # END ANSIBLE MANAGED BLOCK FOR NVM
 
+# need below command run:
+# $(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc
+# BEGIN ANSIBLE MANAGED BLOCK FOR FZF
+# END ANSIBLE MANAGED BLOCK FOR FZF
+
 # oh-my-zsh 플러그인이 적용 안되는 문제로 수동 aws_zsh_completer 설정
 # https://github.com/zsh-users/antigen/issues/583
 # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html
@@ -56,5 +67,3 @@ export PATH=$PATH
 
 # to use case-sensitive completion
 CASE_SENSITIVE="true"
-
-antigen apply
