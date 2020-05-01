@@ -6,14 +6,14 @@
     mode: '0644'
   changed_when: false
 
-- name: comment out 'antigen apply' in ~/.zshrc.viasite-angible.zsh.tmp
-  lineinfile:
-    path: "~{{ zsh_user }}/.zshrc.viasite-angible.zsh.tmp"
-    regexp: '^antigen apply$'
-    line: |
-      # Check below user define configure in this file
-      # antigen apply
-  changed_when: false
+# - name: comment out 'antigen apply' in ~/.zshrc.viasite-angible.zsh.tmp
+#  lineinfile:
+#    path: "~{{ zsh_user }}/.zshrc.viasite-angible.zsh.tmp"
+#    regexp: '^antigen apply$'
+#    line: |
+#      # Check below user define configure in this file
+#      # antigen apply
+#  changed_when: false
 
 - name: copy ~/.zshrc.viasite-angible.zsh.tmp to ~/.zshrc.viasite-angible.zsh
   copy:
