@@ -42,7 +42,6 @@
     depth: 1
 
 - name: copy git-p4.py into /usr/local/bin/
-  become: true
   copy:
     src: "{{ ansible_env.HOME }}/.git-p4-support-hangul/git-p4.py"
     dest: /usr/local/bin/
@@ -53,7 +52,6 @@
 #     var: git_p4_bin_src
 
 - name: copy p4 into /usr/local/bin/
-  become: true
   copy:
     src: "{{ git_p4_bin_src }}"
     dest: /usr/local/bin/p4

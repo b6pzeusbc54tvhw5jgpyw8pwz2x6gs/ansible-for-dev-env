@@ -2,10 +2,10 @@
 
 /.galaxy_roles/
 
-/hosts.yml
 /extra-vars-user.yml
 
 # vagrant
 /ubuntu-xenial-16.04-cloudimg-console.log
 /.vagrant
 /*.box
+/vars-user.yml

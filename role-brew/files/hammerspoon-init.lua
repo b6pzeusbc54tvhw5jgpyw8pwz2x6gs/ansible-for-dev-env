@@ -29,12 +29,12 @@ vimSwitchMode = hs.hotkey.bind({'control'}, 'c', function()
   supportTitleArr = { 'iTerm2', 'Code', 'IntelliJ IDEA' }
   -- print( "input_source" )
   -- print( input_source )
- 
-  if ((input_source == input2SetKorean or input_source == inputHan390) and has_value(supportTitleArr,title)) then
-    -- print("switch input and vim mode")
+
+  if (input_source ~= inputEnglish and has_value(supportTitleArr,title)) then
+    -- print("switch english!")
     hs.eventtap.keyStroke({}, 'right')
-    -- hs.keycodes.currentSourceID(input_source == input2SetKorean and inputEnglish or inputGureumQwerty)
     hs.eventtap.keyStroke({}, 'escape')
+    hs.keycodes.currentSourceID(inputEnglish)
   else
     vimSwitchMode:disable()
     hs.eventtap.keyStroke({'control'}, 'c')

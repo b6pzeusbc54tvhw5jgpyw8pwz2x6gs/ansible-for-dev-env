@@ -4,10 +4,13 @@
     state: directory
     mode: 0755
 
+  # VIM Editor, VS Code, Idea에서 VIM 사용 시
+  # insert mode에서 한글 입력 후 command mode로 나왔을 때 자동 영문 전환을 위한
+  # [Hammerspoon][https://www.hammerspoon.org/] lua 스크립트.
 - name: copying hammerspoon init.lua
   copy:
     backup: yes
-    src: init.lua
+    src: hammerspoon-init.lua
     dest: ~/.hammerspoon/init.lua
     mode: 0644
 
@@ -51,49 +54,85 @@
     state: latest
     update_homebrew: yes
 
-- name: Install a brew cask app - 1
+- name: Install a brew cask app - 1/7
   homebrew_cask:
     name:
-      #- lastpass  # app store version 이 좋다
+      #- lastpass            # app store version 이 좋다
       - google-chrome
-      - visual-studio-code
-      - skitch
-      - keyboard-maestro
-    state: present
-    update_homebrew: yes
-    sudo_password: "{{ ansible_ssh_pass }}"
-
-- name: Install a brew cask app - 2
-  homebrew_cask:
-    name:
-      - karabiner-elements
-      - send-anywhere
-      - iterm2
-      - firefox
     state: present
     update_homebrew: no
-    sudo_password: "{{ ansible_ssh_pass }}"
+
+- name: Install a brew cask app - 2/7
+  homebrew_cask:
+    name:
+      - synergy
+      - iterm2
+      - visual-studio-code
+      - intellij-idea-ce
+    state: present
+    update_homebrew: no
 
 
-- name: Install a brew cask app - 3
+- name: Install a brew cask app - 3/7
   homebrew_cask:
     name:
       - slack
-      - webtorrent
+      - bettertouchtool
+    state: present
+    update_homebrew: no
+
+- name: Install a brew cask app - 4/7
+  homebrew_cask:
+    name:
       - notion
       - obs
     state: present
     update_homebrew: no
-    sudo_password: "{{ ansible_ssh_pass }}"
 
-- name: Install a brew cask app - 4
+- name: Install a brew cask app - 5/7
   homebrew_cask:
     name:
       - docker
       - alfred
       - hammerspoon
-      - bettertouchtool
+      - firefox
+      - send-anywhere
     state: present
     update_homebrew: no
-    sudo_password: "{{ ansible_ssh_pass }}"
+
+#- name: show dictionary
+#  debug:
+#    msg: "{{item.key}}: {{item.value}}"
+#  with_dict: "{{ ansible_env }}"
+
+- debug:
+    var: hello
+
+# - name: become test
+#   file:
+#     path: ~/aaaaabbbbb
+#     state: touch
+#     mode: 0644
+#   become: true
+
+# - debug:
+#     var: ansible_become_pass
+
+- name: Install a brew cask app - 6/7
+  homebrew_cask:
+    name:
+      - karabiner-elements
+      - gureumkim     # 필요한 유저만
+    state: present
+    update_homebrew: no
+    sudo_password: "{{ ansible_become_pass }}"
+
+# 다운을 못받는 네트워크 환경이 있다.
+# 필요하면 주석치고 넘어 간 후 network 변경해서 주석풀고 처리
+- name: Install a brew cask app - 7/7
+  homebrew_cask:
+    name:
+      - keyboard-maestro
+    state: present
+    update_homebrew: no
 

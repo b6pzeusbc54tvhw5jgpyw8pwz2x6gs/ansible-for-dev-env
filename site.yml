@@ -6,9 +6,10 @@
     - { role: role-brew, tags: 'brew' }
     - { role: role-vim, tags: 'vim' }
     - { role: role-git, tags: 'git' }
-    - { role: role-node, tags: 'node' }
     # command 존재 여부로 zsh plugin 을 설치 하므로 나중에 수행해야 함
     - { role: role-zsh, tags: 'zsh' }
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
- 
+  vars_files:
+    - ./vars.yml
+    - ./vars-user.yml

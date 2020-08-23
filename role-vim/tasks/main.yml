@@ -7,21 +7,6 @@
 - debug:
     msg: role-vim/tasks/main.yml
 
-- name: ensure ppa:jonathonf/vim is present
-  become: true
-  apt_repository:
-    repo: ppa:jonathonf/vim
-    state: present
-  when: ansible_os_family == "Debian"
-
-- name: ensure vim packages is at the latest version for Debian
-  become: true
-  apt:
-    name:
-    - vim
-    state: latest
-  when: ansible_os_family == "Debian"
-
 - name: ensure vim packages is at the latest version for Darwin
   homebrew:
     name: vim
