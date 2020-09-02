@@ -96,6 +96,14 @@ https://www.alfredapp.com/
 - https://iterm2colorschemes.com/
 - recommend: NightLion v2, Tango Dark
 
+### VS Code에서 키 press and hold 안되는 문제
+
+```
+$ defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+```
+
+- https://stackoverflow.com/a/44010683
+
 ### macOS Sierra(Mojave)에서 원화(₩) 대신 백 쿼트(`) 입력하기
 
 - TODO: Catalina에서 동작 확인 필요
