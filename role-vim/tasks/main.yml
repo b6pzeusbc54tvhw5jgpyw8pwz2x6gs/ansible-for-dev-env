@@ -74,32 +74,28 @@
     dest: "{{ ansible_env.HOME }}/.vim/bundle/{{ item.name | default(item.repo.split('/')[-1][:-4]) }}"
     depth: 1
   with_items: &managed_plugins
-  - repo: https://github.com/scrooloose/nerdtree.git
-  - repo: https://github.com/Lokaltog/vim-easymotion.git
-  - repo: https://github.com/majutsushi/tagbar.git
-  - repo: https://github.com/vim-scripts/DirDiff.vim.git
-  - repo: https://github.com/bling/vim-airline.git
-  - repo: https://github.com/plasticboy/vim-markdown.git
-  - repo: https://github.com/w0rp/ale.git
-  - repo: https://github.com/mbbill/undotree.git
-  - repo: https://github.com/tpope/vim-fugitive.git
-  - repo: https://github.com/neoclide/vim-jsx-improve.git
-  - repo: https://github.com/MaxMEllon/vim-jsx-pretty.git
-  - repo: https://github.com/chrisbra/SudoEdit.vim.git
-  - repo: https://github.com/hashivim/vim-hashicorp-tools.git
-  - repo: https://github.com/junegunn/fzf.vim.git
-  - repo: https://github.com/rking/ag.vim.git
-  - repo: https://github.com/junegunn/vim-peekaboo.git
-  - repo: https://github.com/isRuslan/vim-es6.git
-  - repo: https://github.com/rargo/vim-tab.git
-  - repo: https://github.com/nathanaelkane/vim-indent-guides.git
-  - repo: https://github.com/nanotech/jellybeans.vim.git
-  - repo: https://github.com/junegunn/vim-easy-align.git
-  - repo: https://github.com/editorconfig/editorconfig-vim.git
-  - repo: https://github.com/ntpeters/vim-better-whitespace.git
-  - repo: https://github.com/tpope/vim-unimpaired.git
-  - repo: https://github.com/tpope/vim-repeat.git
-  - repo: https://github.com/cespare/vim-toml.git
+    - repo: https://github.com/scrooloose/nerdtree.git
+    - repo: https://github.com/Lokaltog/vim-easymotion.git
+    - repo: https://github.com/majutsushi/tagbar.git
+    - repo: https://github.com/vim-scripts/DirDiff.vim.git
+    - repo: https://github.com/bling/vim-airline.git
+    - repo: https://github.com/plasticboy/vim-markdown.git
+    - repo: https://github.com/w0rp/ale.git
+    - repo: https://github.com/mbbill/undotree.git
+    - repo: https://github.com/tpope/vim-fugitive.git
+    - repo: https://github.com/MaxMEllon/vim-jsx-pretty.git
+    - repo: https://github.com/chrisbra/SudoEdit.vim.git
+    - repo: https://github.com/hashivim/vim-hashicorp-tools.git
+    - repo: https://github.com/junegunn/fzf.vim.git
+    - repo: https://github.com/rking/ag.vim.git
+    - repo: https://github.com/junegunn/vim-peekaboo.git
+    - repo: https://github.com/rargo/vim-tab.git
+    - repo: https://github.com/nathanaelkane/vim-indent-guides.git
+    - repo: https://github.com/nanotech/jellybeans.vim.git
+    - repo: https://github.com/junegunn/vim-easy-align.git
+    - repo: https://github.com/editorconfig/editorconfig-vim.git
+    - repo: https://github.com/ntpeters/vim-better-whitespace.git
+    - repo: https://github.com/cespare/vim-toml.git
 
 
 
