@@ -6,15 +6,6 @@
     mode: '0644'
   changed_when: false
 
-# - name: comment out 'antigen apply' in ~/.zshrc.viasite-angible.zsh.tmp
-#  lineinfile:
-#    path: "~{{ zsh_user }}/.zshrc.viasite-angible.zsh.tmp"
-#    regexp: '^antigen apply$'
-#    line: |
-#      # Check below user define configure in this file
-#      # antigen apply
-#  changed_when: false
-
 - name: copy ~/.zshrc.viasite-angible.zsh.tmp to ~/.zshrc.viasite-angible.zsh
   copy:
     src: "~{{ zsh_user }}/.zshrc.viasite-angible.zsh.tmp"
@@ -55,29 +46,40 @@
     block: "{{ lookup('file', '~/.zshrc.viasite-angible.zsh') }}"
   when: zshrc_user_file.changed or zshrc_viasite_angible_zsh.changed
 
-# marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다
-- name: insert load nvm script
-  blockinfile:
-    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR NVM'
-    path: "~{{ ansible_user_id }}/.zshrc"
-    mode: 0644
-    content: |-
-      export NVM_DIR="$HOME/.nvm"
-      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-  when: zshrc_user_file.changed or zshrc_viasite_angible_zsh.changed
-
-- name: insert load fzf script
-  blockinfile:
-    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR FZF'
-    path: "~{{ ansible_user_id }}/.zshrc"
-    mode: 0644
-    content: |-
-      [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-  when: zshrc_user_file.changed or zshrc_viasite_angible_zsh.changed
+- name: "nvm install"
+  git:
+    repo: "{{ item.repo }}"
+    version: "{{ item.version | default('master') }}"
+    dest: "{{ ansible_env.HOME }}/.nvm"
+    depth: "1"
+  with_items:
+    - repo: https://github.com/nvm-sh/nvm.git
 
 - name: "Clone LS_COLORS"
   git:
     repo: "https://github.com/trapd00r/LS_COLORS"
     update: false
     dest: "~{{ ansible_user_id }}/.dircolors"
+
+# marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다
+- name: insert ls aliases for MacOS
+  blockinfile:
+    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR LS_ALIASES'
+    path: "~{{ ansible_user_id }}/.zshrc"
+    mode: 0644
+    content: |-
+      alias ls='/usr/local/bin/gls --color=auto'
+      alias l='/usr/local/bin/gls -CF --color=auto'
+      alias ll='/usr/local/bin/gls -alF --color=auto'
+  when: ansible_os_family == 'Darwin' and (zshrc_user_file.changed or zshrc_viasite_angible_zsh.changed)
+
+- name: insert ls aliases for Ubuntu
+  blockinfile:
+    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR LS_ALIASES'
+    path: "~{{ ansible_user_id }}/.zshrc"
+    mode: 0644
+    content: |-
+      alias ls='/bin/ls --color=auto'
+      alias l='/bin/ls -CF --color=auto'
+      alias ll='/bin/ls -alF --color=auto'
+  when: ansible_os_family == 'Debian' and (zshrc_user_file.changed or zshrc_viasite_angible_zsh.changed)

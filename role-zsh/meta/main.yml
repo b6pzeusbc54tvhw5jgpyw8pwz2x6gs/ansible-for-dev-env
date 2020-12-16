@@ -1,6 +1,7 @@
 ---
 dependencies:
   - role: viasite-ansible.zsh
+    become: "{{ 'yes' if ansible_os_family == 'Debian' else 'no' }}"
     vars:
       zsh_autosuggestions_bind_key: "^ "
       zsh_antigen_theme: robbyrussell

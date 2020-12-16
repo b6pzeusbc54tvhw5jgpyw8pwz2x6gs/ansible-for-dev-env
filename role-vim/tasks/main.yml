@@ -7,13 +7,6 @@
 - debug:
     msg: role-vim/tasks/main.yml
 
-- name: ensure vim packages is at the latest version for Darwin
-  homebrew:
-    name: vim
-    state: latest
-    update_homebrew: no
-  when: ansible_os_family == "Darwin"
-
 - name: "Create directories for pathogen, plugins and backup file"
   file:
     path: "{{ item }}"

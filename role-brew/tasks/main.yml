@@ -41,6 +41,7 @@
 - name: Install a brew packages for Darwin
   homebrew:
     name:
+      - vim
       - ripgrep
       - jq
       - direnv

@@ -42,9 +42,10 @@
     depth: 1
 
 - name: copy git-p4.py into /usr/local/bin/
+  become: "{{ 'yes' if ansible_os_family == 'Debian' else 'no' }}"
   copy:
     src: "{{ ansible_env.HOME }}/.git-p4-support-hangul/git-p4.py"
-    dest: /usr/local/bin/
+    dest: /usr/local/bin/git-p4.py
     mode: preserve
     remote_src: true
 
@@ -52,6 +53,7 @@
 #     var: git_p4_bin_src
 
 - name: copy p4 into /usr/local/bin/
+  become: "{{ 'yes' if ansible_os_family == 'Debian' else 'no' }}"
   copy:
     src: "{{ git_p4_bin_src }}"
     dest: /usr/local/bin/p4

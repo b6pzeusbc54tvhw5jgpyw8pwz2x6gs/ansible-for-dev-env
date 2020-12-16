@@ -1,11 +1,15 @@
-# ansible-for-macos
+# ansible-for-dev-env
 Ansible playbook and guide for quickly provisioning personal work environment when setting up MacOS.
 
 ## Preparation
 
 ```shell
+# for MacOS
 $ brew install ansible python3
 $ ansible-galaxy install --roles-path=.galaxy_roles viasite-ansible.zsh
+
+# for Ubuntu
+$ sudo apt install ansible python3
 ```
 
 ### Connection
@@ -40,6 +44,9 @@ Then, when the editor opens, write the following:
 # required variables:
 ansible_become_pass: '<user-sudo-password>'
 
+# for Ubuntu
+ansible_python_interpreter: /usr/bin/python3  # this overwrite vars.yml's value
+
 # optional variables:
 EXTRA_VAR_UPDATE_VIM_PLUGIN: true     # default: false
 ```
@@ -47,10 +54,14 @@ EXTRA_VAR_UPDATE_VIM_PLUGIN: true     # default: false
 ## Execute ansible-playbook
 
 ```sh
-$ ansible-playbook site.yml -v -u $USER --ask-vault-pass
+# for MacOS 10.15
+$ ansible-playbook site-macos-10.15.yml -v -u $USER --ask-vault-pass
+
+# for Ubuntu 16
+$ ansible-playbook site-ubuntu-16.yml -v -u $USER --ask-vault-pass
 
 ## or you can excute only specific tagged task, using -t
-$ ansible-playbook site.yml -v -u $USER --ask-vault-pass -t git
+$ ansible-playbook <site-xxx.yml> -v -u $USER --ask-vault-pass -t git
 ```
 
 ### Insecure directories and files 문제
@@ -73,6 +84,15 @@ $ compaudit | xargs chmod g-w
 
 ## Manual settings
 `ansible-playbook` 이후 해야할 수동 작업 들:
+
+### Install Node
+
+```
+$ nvm install <node-version>
+$ nvm use <node-version>
+```
+
+만약 `nvm` 명령어가 없다고 나오면 zsh 접속을 다시 해보자.
 
 ### Preferences Keyboard setting
 - Preferences - Keyboard - Adjust `Key Repeat`, `Delay Until Repeat`

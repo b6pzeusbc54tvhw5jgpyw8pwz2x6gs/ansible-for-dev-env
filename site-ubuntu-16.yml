@@ -1,0 +1,15 @@
+# https://docs.ansible.com/ansible/2.5/user_guide/playbooks_reuse_roles.html
+
+---
+- hosts: all
+  roles:
+    - { role: role-apt, tags: 'apt' }
+    - { role: role-vim, tags: 'vim' }
+    - { role: role-git, tags: 'git' }
+    # command 존재 여부로 zsh plugin 을 설치 하므로 나중에 수행해야 함
+    - { role: role-zsh, tags: 'zsh' }
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  vars_files:
+    - ./vars.yml
+    - ./vars-user.yml

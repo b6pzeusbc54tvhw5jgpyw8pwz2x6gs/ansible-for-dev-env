@@ -28,10 +28,9 @@ PATH="/usr/local/opt/curl/bin:$PATH"
 
 MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
-eval $( dircolors -b $HOME/.dircolors/LS_COLORS ) >> ~/.zshrc
-alias ls='/usr/local/bin/gls --color=auto'
-alias l='/usr/local/bin/gls --color=auto'
-alias ll='/usr/local/bin/gls -alF --color=auto'
+eval "$(dircolors -b $HOME/.dircolors/LS_COLORS)"
+# BEGIN ANSIBLE MANAGED BLOCK FOR LS_ALIASES
+# END ANSIBLE MANAGED BLOCK FOR LS_ALIASES
 
 alias g='git'
 alias d='docker'
@@ -47,13 +46,14 @@ export GPG_TTY=$(tty)
 
 export P4CONFIG=~/.p4config
 
-# BEGIN ANSIBLE MANAGED BLOCK FOR NVM
-# END ANSIBLE MANAGED BLOCK FOR NVM
+# https://github.com/nvm-sh/nvm#git-install
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# need below command run:
+# need below command run???:
 # $(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc
-# BEGIN ANSIBLE MANAGED BLOCK FOR FZF
-# END ANSIBLE MANAGED BLOCK FOR FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # https://unix.stackexchange.com/questions/86012/what-is-the-purpose-of-the-hash-command
 export PATH=$PATH
