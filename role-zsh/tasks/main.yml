@@ -1,50 +1,60 @@
 
-- name: "copy {{ zsh_config }} to ~/.zshrc.viasite-angible.zsh.tmp"
+- name: create ~/.zshrc.template
   copy:
-    src: "{{ zsh_config }}"
-    dest: "~{{ zsh_user }}/.zshrc.viasite-angible.zsh.tmp"
-    mode: '0644'
-  changed_when: false
-
-- name: copy ~/.zshrc.viasite-angible.zsh.tmp to ~/.zshrc.viasite-angible.zsh
-  copy:
-    src: "~{{ zsh_user }}/.zshrc.viasite-angible.zsh.tmp"
-    dest: "~{{ zsh_user }}/.zshrc.viasite-angible.zsh"
-    mode: '0644'
-  register: zshrc_viasite_angible_zsh
-
-- name: touch .zshrc
-  file:
-    path: "{{ ansible_env.HOME }}/.zshrc"
-    state: touch
+    src: .zshrc.template
+    dest: "~{{ ansible_user_id }}/.zshrc.template"
     mode: 0644
-  # https://github.com/ansible/ansible-modules-core/issues/170
-  register: touch_log
-  changed_when: touch_log.diff is defined and (touch_log.diff.before.state != "file" or touch_log.diff.before.mode is defined)
+  register: zshrc_template
 
-- name: create ~/.zshrc.user
+- name: create ~/.zshrc.local if .zshrc.template changed
   copy:
-    src: .zshrc.user
-    dest: "~{{ ansible_user_id }}/.zshrc.user"
+    src: .zshrc.template
+    dest: "~{{ ansible_user_id }}/.zshrc.local"
     mode: 0644
-  register: zshrc_user_file
+    remote_src: yes
+  register: zshrc_local
 
-- name: copy ~/.zshrc.user into ~/.zshrc
-  copy:
-    src: "~{{ ansible_user_id }}/.zshrc.user"
-    dest: "~{{ ansible_user_id }}/.zshrc"
-    mode: '0644'
-    backup: yes
-  when: zshrc_user_file.changed or zshrc_viasite_angible_zsh.changed
-  register: zshrc
-
-- name: insert viasite-angible.zsh into ~/.zshrc
+# marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다.
+- name: insert ls aliases for MacOS
   blockinfile:
-    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR viasite-ansible.zsh'
+    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR LS_ALIASES'
     path: "~{{ ansible_user_id }}/.zshrc"
     mode: 0644
-    block: "{{ lookup('file', '~/.zshrc.viasite-angible.zsh') }}"
-  when: zshrc_user_file.changed or zshrc_viasite_angible_zsh.changed
+    content: |-
+      alias ls='/usr/local/bin/gls --color=auto'
+      alias l='/usr/local/bin/gls -CF --color=auto'
+      alias ll='/usr/local/bin/gls -alF --color=auto'
+  when: ansible_os_family == 'Darwin' and zshrc_local.changed
+
+- name: insert ls aliases for Ubuntu
+  blockinfile:
+    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR LS_ALIASES'
+    path: "~{{ ansible_user_id }}/.zshrc"
+    mode: 0644
+    content: |-
+      alias ls='/bin/ls --color=auto'
+      alias l='/bin/ls -CF --color=auto'
+      alias ll='/bin/ls -alF --color=auto'
+  when: ansible_os_family == 'Debian' and zshrc_local.changed
+
+- name: insert ls aliases for Ubuntu
+  blockinfile:
+    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR CUSTOM_PROMPT'
+    path: "~{{ ansible_user_id }}/.zshrc"
+    mode: 0644
+    content: |-
+      # On Chrome secure shell, if special character exists, bad cursor position problem occurs.
+      PROMPT="%(?:%{$fg_bold[green]%}>:%{$fg_bold[red]%}>)"
+      PROMPT+=' %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
+
+      ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[red]%}%{-%G%}"
+      ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[red]%}%{x%G%}"
+      ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[blue]%}%{+%G%}"
+      ZSH_THEME_GIT_PROMPT_BEHIND="%{↓%G%}"
+      ZSH_THEME_GIT_PROMPT_AHEAD="%{↑%G%}"
+      ZSH_THEME_GIT_PROMPT_UNTRACKED="%{…%G%}"
+      ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{v%G%}"
+  when: EXTRA_VAR_NO_SPECIAL_CHAR_IN_PROMPT and and zshrc_local.changed
 
 - name: "nvm install"
   git:
@@ -61,25 +71,3 @@
     update: false
     dest: "~{{ ansible_user_id }}/.dircolors"
 
-# marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다
-- name: insert ls aliases for MacOS
-  blockinfile:
-    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR LS_ALIASES'
-    path: "~{{ ansible_user_id }}/.zshrc"
-    mode: 0644
-    content: |-
-      alias ls='/usr/local/bin/gls --color=auto'
-      alias l='/usr/local/bin/gls -CF --color=auto'
-      alias ll='/usr/local/bin/gls -alF --color=auto'
-  when: ansible_os_family == 'Darwin' and (zshrc_user_file.changed or zshrc_viasite_angible_zsh.changed)
-
-- name: insert ls aliases for Ubuntu
-  blockinfile:
-    marker: '# {mark} ANSIBLE MANAGED BLOCK FOR LS_ALIASES'
-    path: "~{{ ansible_user_id }}/.zshrc"
-    mode: 0644
-    content: |-
-      alias ls='/bin/ls --color=auto'
-      alias l='/bin/ls -CF --color=auto'
-      alias ll='/bin/ls -alF --color=auto'
-  when: ansible_os_family == 'Debian' and (zshrc_user_file.changed or zshrc_viasite_angible_zsh.changed)

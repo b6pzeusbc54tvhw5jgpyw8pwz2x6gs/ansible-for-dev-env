@@ -9,3 +9,5 @@
 /.vagrant
 /*.box
 /vars-user.yml
+
+/fetched

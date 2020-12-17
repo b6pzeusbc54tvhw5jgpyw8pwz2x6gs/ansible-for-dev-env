@@ -6,10 +6,12 @@ Ansible playbook and guide for quickly provisioning personal work environment wh
 ```shell
 # for MacOS
 $ brew install ansible python3
-$ ansible-galaxy install --roles-path=.galaxy_roles viasite-ansible.zsh
 
 # for Ubuntu
 $ sudo apt install ansible python3
+
+# Install dependency
+$ ansible-galaxy install --roles-path=.galaxy_roles viasite-ansible.zsh
 ```
 
 ### Connection
@@ -48,7 +50,8 @@ ansible_become_pass: '<user-sudo-password>'
 ansible_python_interpreter: /usr/bin/python3  # this overwrite vars.yml's value
 
 # optional variables:
-EXTRA_VAR_UPDATE_VIM_PLUGIN: true     # default: false
+EXTRA_VAR_UPDATE_VIM_PLUGIN: true          # default: false
+EXTRA_VAR_NO_SPECIAL_CHAR_IN_PROMPT: true  # default: false
 ```
 
 ## Execute ansible-playbook

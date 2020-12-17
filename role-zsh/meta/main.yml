@@ -3,35 +3,36 @@ dependencies:
   - role: viasite-ansible.zsh
     become: "{{ 'yes' if ansible_os_family == 'Debian' else 'no' }}"
     vars:
+      zsh_load_etc_profile: no
+      zsh_fzf_version: 0.23.1
       zsh_autosuggestions_bind_key: "^ "
       zsh_antigen_theme: robbyrussell
       zsh_antigen_bundles_extras:
-      - vi-mode
+        - vi-mode
       zsh_antigen_bundles:
-      - docker-compose
-      - docker
-      - fancy-ctrl-z
-      - { name: command-not-found, when: "{{ ansible_os_family != 'Darwin' }}" } # too slow on OSX
-      - { name: brew, command: brew }
-      - gnu-utils
-      - { name: pip, command: pip }
-      - python
-      - { name: tmux, command: tmux }
-      - { name: go, command: go }
-      - { name: rake, command: rake }
-      - { name: symfony2, command: symfony }
-      - { name: systemd, command: systemctl }
-      - { name: vagrant, command: vagrant }
-      - { name: viasite/server-scripts, command: dbdump }
-      - { name: viasite-ansible/zsh-ansible-server, command: ansible-deploy }
-      - zsh_reload
+        - { name: command-not-found, when: "{{ ansible_os_family != 'Darwin' }}" }  # too slow on OSX
+        - { name: brew, command: brew, when: "{{ ansible_os_family == 'Darwin' }}" }
+        - docker
+        - docker-compose
+        - fancy-ctrl-z
+        - git-extras
+        - gnu-utils
+        - { name: httpie, command: http }
+        - { name: golang, command: go }
+        - { name: pip, command: pip }
+        - python
+        - { name: tmux, command: tmux }
+        - { name: rake, command: rake }
+        - { name: symfony2, command: symfony }
+        - { name: systemd, command: systemctl }
+        - zsh_reload
 
-      # on zsh 4.3.10 autosuggestions breaks multiline commands with \
-      - { name: zsh-users/zsh-autosuggestions, when: "{{ zsh_version | default(false) is version('5.0', '>=') }}" }
-      - popstas/zsh-command-time
-      - { name: unixorn/autoupdate-antigen.zshplugin, when: "{{ zsh_update_interval > 0 }}" }
-      - urbainvaes/fzf-marks # replaces jump plugin, mark, jump and Ctrl+G
-      - "{{ fzf_widgets }}"
-      # must be last, don't work on zsh < 4.3.17
-      #- { name: zsh-users/zsh-syntax-highlighting, when: "{{ zsh_version | default(false) is version('4.3.17', '>=') }}" }
-      - { name: zdharma/fast-syntax-highlighting, when: "{{ zsh_version | default(false) is version('4.3.17', '>=') }}" }
+        # on zsh 4.3.10 autosuggestions breaks multiline commands with \
+        - { name: zsh-users/zsh-autosuggestions, when: "{{ zsh_version | default(false) is version('5.0', '>=') }}" }
+        - popstas/zsh-command-time
+        - { name: unixorn/autoupdate-antigen.zshplugin, when: "{{ zsh_update_interval > 0 }}" }
+        - urbainvaes/fzf-marks # replaces jump plugin, mark, jump and Ctrl+G
+        - "{{ fzf_widgets }}"
+        # must be last, don't work on zsh < 4.3.17
+        #- { name: zsh-users/zsh-syntax-highlighting, when: "{{ zsh_version | default(false) is version('4.3.17', '>=') }}" }
+        - { name: zdharma/fast-syntax-highlighting, when: "{{ zsh_version | default(false) is version('4.3.17', '>=') }}" }

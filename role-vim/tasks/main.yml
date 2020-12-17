@@ -62,7 +62,7 @@
 - name: "Install plugins"
   git:
     repo: "{{ item.repo }}"
-    update: "{{ EXTRA_VAR_UPDATE_VIM_PLUGIN | default(false) | bool }}"
+    update: "{{ EXTRA_VAR_UPDATE_VIM_PLUGIN }}"
     version: "{{ item.version | default('master') }}"
     dest: "{{ ansible_env.HOME }}/.vim/bundle/{{ item.name | default(item.repo.split('/')[-1][:-4]) }}"
     depth: 1
@@ -80,6 +80,7 @@
     - repo: https://github.com/chrisbra/SudoEdit.vim.git
     - repo: https://github.com/hashivim/vim-hashicorp-tools.git
     - repo: https://github.com/junegunn/fzf.vim.git
+    - repo: https://github.com/junegunn/fzf.git
     - repo: https://github.com/rking/ag.vim.git
     - repo: https://github.com/junegunn/vim-peekaboo.git
     - repo: https://github.com/rargo/vim-tab.git
@@ -121,10 +122,3 @@
     state: absent
   with_items: "{{ current_plugins.stdout_lines }}"
   when: item not in managed_plugins
-
-# marker 가 여러줄이면 무조건 changed 되버리는 버그가 있다
-- blockinfile:
-    marker: '" {mark} ANSIBLE_MANAGED_BLOCK_FOR_SET_RTP_FZF'
-    path: "~{{ ansible_user_id }}/.vimrc"
-    content: "set rtp+={{ vim_fzf_path }}"
-

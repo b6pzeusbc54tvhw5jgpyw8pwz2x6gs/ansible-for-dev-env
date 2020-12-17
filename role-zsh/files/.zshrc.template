@@ -1,7 +1,6 @@
-# BEGIN ANSIBLE MANAGED BLOCK FOR viasite-ansible.zsh
-# END ANSIBLE MANAGED BLOCK FOR viasite-ansible.zsh
-
 # From here, user define configure
+
+unset $(compgen -v | grep "^POWERLEVEL9K_")
 
 ####################################################################
 # fasd
@@ -60,3 +59,6 @@ export PATH=$PATH
 
 # to use case-sensitive completion
 CASE_SENSITIVE="true"
+
+# BEGIN ANSIBLE MANAGED BLOCK FOR CUSTOM_PROMPT
+# END ANSIBLE MANAGED BLOCK FOR CUSTOM_PROMPT
