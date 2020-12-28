@@ -27,113 +27,51 @@
     dest: ~/.config/karabiner/karabiner.json
     mode: 0644
 
-- name: Install a brew packages for Darwin
-  homebrew:
-    name:
-      - fzf
-    state: latest
-  register: fzf
-
-- name: fzf install
-  shell: "$(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc"
-  when: fzf.changed
-
-- name: Install a brew packages for Darwin
-  homebrew:
+- name: Install brew apps Using without sudo password
+  community.general.homebrew:
     name:
       - vim
       - ripgrep
       - jq
       - direnv
       - thefuck
-      - yarn
       - the_silver_searcher
       - fasd
       - tree
       - coreutils
       - curl
-    state: latest
-    update_homebrew: yes
-
-- name: Install a brew cask app - 1/7
-  homebrew_cask:
-    name:
-      #- lastpass            # app store version 이 좋다
-      - google-chrome
+      - fzf
     state: present
-    update_homebrew: no
 
-- name: Install a brew cask app - 2/7
-  homebrew_cask:
+- name: Install brew cask apps Using without sudo password
+  community.general.homebrew_cask:
     name:
-      - synergy
       - iterm2
-      - visual-studio-code
-      - intellij-idea-ce
-    state: present
-    update_homebrew: no
-
-
-- name: Install a brew cask app - 3/7
-  homebrew_cask:
-    name:
       - slack
       - bettertouchtool
-    state: present
-    update_homebrew: no
-
-- name: Install a brew cask app - 4/7
-  homebrew_cask:
-    name:
       - notion
       - obs
-    state: present
-    update_homebrew: no
-
-- name: Install a brew cask app - 5/7
-  homebrew_cask:
-    name:
       - docker
       - alfred
       - hammerspoon
       - firefox
+      - intellij-idea-ce
+      - google-chrome
+      - synergy
+      - visual-studio-code
+      - intellij-idea-ce
       - send-anywhere
+      # 다운을 못받는 네트워크 환경이 있다.
+      # 필요하면 주석치고 넘어 간 후 network 변경해서 주석풀고 처리
+      - keyboard-maestro
+    greedy: yes
     state: present
-    update_homebrew: no
 
-#- name: show dictionary
-#  debug:
-#    msg: "{{item.key}}: {{item.value}}"
-#  with_dict: "{{ ansible_env }}"
-
-- debug:
-    var: hello
-
-# - name: become test
-#   file:
-#     path: ~/aaaaabbbbb
-#     state: touch
-#     mode: 0644
-#   become: true
-
-# - debug:
-#     var: ansible_become_pass
-
-- name: Install a brew cask app - 6/7
-  homebrew_cask:
+- name: Install apps Using sudo password for installing cask
+  community.general.homebrew_cask:
     name:
       - karabiner-elements
-      - gureumkim     # 필요한 유저만
+      - gureumkim
+    greedy: yes
     state: present
-    update_homebrew: no
     sudo_password: "{{ ansible_become_pass }}"
-
-# 다운을 못받는 네트워크 환경이 있다.
-# 필요하면 주석치고 넘어 간 후 network 변경해서 주석풀고 처리
-- name: Install a brew cask app - 7/7
-  homebrew_cask:
-    name:
-      - keyboard-maestro
-    state: present
-    update_homebrew: no
-
