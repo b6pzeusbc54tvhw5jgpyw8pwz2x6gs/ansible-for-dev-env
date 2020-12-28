@@ -47,14 +47,11 @@
       PROMPT="%(?:%{$fg_bold[green]%}>:%{$fg_bold[red]%}>)"
       PROMPT+=' %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
 
-      ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[red]%}%{-%G%}"
-      ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[red]%}%{x%G%}"
-      ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[blue]%}%{+%G%}"
-      ZSH_THEME_GIT_PROMPT_BEHIND="%{↓%G%}"
-      ZSH_THEME_GIT_PROMPT_AHEAD="%{↑%G%}"
-      ZSH_THEME_GIT_PROMPT_UNTRACKED="%{…%G%}"
-      ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{v%G%}"
-  when: EXTRA_VAR_NO_SPECIAL_CHAR_IN_PROMPT and and zshrc_local.changed
+      ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}git:(%{$fg[red]%}"
+      ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
+      ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%}) %{$fg[yellow]%}x"
+      ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})"
+  when: EXTRA_VAR_NO_SPECIAL_CHAR_IN_PROMPT and zshrc_local.changed
 
 - name: "nvm install"
   git:
