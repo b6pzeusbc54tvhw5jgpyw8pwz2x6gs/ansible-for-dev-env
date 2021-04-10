@@ -67,6 +67,7 @@
 - name: Check is awscli installed
   shell: command -v aws >/dev/null 2>&1
   register: is_awscli_exist
+  changed_when: false
   ignore_errors: yes
 
 - name: Install awscliv2
@@ -88,6 +89,7 @@
 - name: Check is aws sam cli installed
   shell: command -v sam >/dev/null 2>&1
   register: is_awssamcli_exist
+  changed_when: false
   ignore_errors: yes
 
 - name: Install aws sam cli
