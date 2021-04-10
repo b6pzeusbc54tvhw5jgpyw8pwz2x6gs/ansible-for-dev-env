@@ -164,51 +164,9 @@ let g:JavaComplete_ClasspathGenerationOrder = ['Eclipse', 'Gradle']
 let g:JavaComplete_ImportOrder = ['com.hello.']
 let g:ale_java_javac_classpath='./lib/*:.:./build/classes/java/main/com/hello/*:./src/main/java/*'
 
-
 "----------------------------------------------------------------------
 " Align GitHub-flavored Markdown tables
 "----------------------------------------------------------------------
 " https://github.com/junegunn/vim-easy-align
 au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
 let g:vim_markdown_folding_disabled = 1
-
-
-"----------------------------------------------------------------------
-" vim-tab
-"----------------------------------------------------------------------
-"set follow option  in your vimrc,Press 't' in NERDTree directory node will open the directory in a new tab,
-"and will also sets VIM working directory to that directory node
-let g:NERDTreeChDirMode=2
-
-"below is reload GTAGS, ctags demo code.
-function! TabReloadCGtag()
-	"reload GTAGS in current directory
-	cs kill 0
-	"gnu global produce GTAGS, more useful than cscope
-	cs add GTAGS
-	"reload tags in current directory
-	set tags=tags
-endfunction
-
-"some action when enter a tab
-function! TabEnterTag(nr)
-	"echo "tab ". a:nr . " enter"
-	call TabReloadCGtag()
-endfunction
-
-"some action when leave a tab
-function! TabLeaveTag(nr)
-	"echo "tab ". a:nr . " leaves"
-	"nothing
-endfunction
-
-"don't care about pattern field for now
-let g:TabTagTrigger = {'name':'TabTagTriger','pattern':"", 'enter_callback':"TabEnterTag", 'leave_callback':"TabLeaveTag" }
-
-"call tab#TabShowTrigger()
-call tab#TabAddTrigger(g:TabTagTrigger)
-
-"when first open a tab, the tab enter trigger will not be called,the following code load tags automatically when open a file
-autocmd BufEnter *.[ch] call TabReloadCGtag()
-autocmd BufEnter *.cpp call TabReloadCGtag()
-autocmd BufEnter *.java call TabReloadCGtag()
