@@ -19,6 +19,7 @@ alias zz='fasd_cd -d -i' # cd with interactive selection
 ####################################################################
 # etc
 
+PATH=$HOME/.tfenv/bin:$PATH
 PATH=/usr/local/opt/coreutils/bin:$PATH
 PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 PATH=$(ruby -e 'print Gem.user_dir')/bin:$PATH
@@ -62,3 +63,6 @@ CASE_SENSITIVE="true"
 
 # BEGIN ANSIBLE MANAGED BLOCK FOR CUSTOM_PROMPT
 # END ANSIBLE MANAGED BLOCK FOR CUSTOM_PROMPT
+
+# user configs
+[[ -r "$HOME/.zshrc.user" ]] && source "$HOME/.zshrc.user"

@@ -27,6 +27,9 @@
     dest: ~/.config/karabiner/karabiner.json
     mode: 0644
 
+- homebrew_tap:
+    name: aws/tap
+
 - name: Install brew apps Using without sudo password
   community.general.homebrew:
     name:
@@ -41,6 +44,8 @@
       - coreutils
       - curl
       - fzf
+      - awscli
+      - aws-sam-cli
     state: present
 
 - name: Install brew cask apps Using without sudo password

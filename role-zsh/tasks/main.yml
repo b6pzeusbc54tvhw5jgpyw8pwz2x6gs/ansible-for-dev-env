@@ -53,15 +53,6 @@
       ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})"
   when: EXTRA_VAR_NO_SPECIAL_CHAR_IN_PROMPT and zshrc_template.changed
 
-- name: "nvm install"
-  git:
-    repo: "{{ item.repo }}"
-    version: "{{ item.version | default('master') }}"
-    dest: "{{ ansible_env.HOME }}/.nvm"
-    depth: "1"
-  with_items:
-    - repo: https://github.com/nvm-sh/nvm.git
-
 - name: "Clone LS_COLORS"
   git:
     repo: "https://github.com/trapd00r/LS_COLORS"
