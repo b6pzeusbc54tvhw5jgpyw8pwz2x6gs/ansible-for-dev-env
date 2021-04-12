@@ -79,6 +79,16 @@
       - "-c"
       - "unzip awscliv2.zip && aws/install"
   when: awscli_download.changed or is_awscli_exist.rc == 127
+  
+- name: Update awscliv2
+  become: true
+  ansible.builtin.command:
+    chdir: "{{ ansible_env.HOME }}/Downloads"
+    argv:
+      - "bash"
+      - "-c"
+      - "unzip awscliv2.zip && aws/install --update"
+  when: awscli_download.changed and is_awscli_exist.rc == 0
 
 - name: Download aws sam cli
   get_url:
@@ -101,3 +111,13 @@
       - "-c"
       - "unzip aws-sam-cli-linux-x86_64.zip -d sam-installation && ./sam-installation/install"
   when: awssamcli_download.changed or is_awssamcli_exist.rc == 127
+
+- name: Update aws sam cli
+  become: true
+  ansible.builtin.command:
+    chdir: "{{ ansible_env.HOME }}/Downloads"
+    argv:
+      - "bash"
+      - "-c"
+      - "unzip aws-sam-cli-linux-x86_64.zip -d sam-installation && ./sam-installation/install --update"
+  when: awssamcli_download.changed and is_awssamcli_exist.rc == 0
