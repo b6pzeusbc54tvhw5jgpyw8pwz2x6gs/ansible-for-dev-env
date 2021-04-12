@@ -1,14 +1,14 @@
 - name: ensure ppa:aacebedo/fasd is present
+  when: ansible_os_family == "Debian"
   become: true
   apt_repository:
     repo: ppa:aacebedo/fasd
     state: present
     update_cache: false
-  when: ansible_os_family == "Debian"
 
 - name: ensure apt packages is at the latest version
-  become: true
   when: ansible_os_family == "Debian"
+  become: true
   apt:
     install_recommends: false
     update_cache: true
@@ -24,19 +24,102 @@
       - silversearcher-ag
       - xclip
       - git
-      - git-extras
       - fasd
       - tree
-      - ripgrep
+      - ruby
+      - unzip
 
-# - name: Check if ripgrep is installed
-#   shell: "command -v rg || which rg"
-#   register: ripgrep_is_installed
-#   changed_when: false
-#   failed_when: false
+- name: Install a ripgrep for Debian
+  when: ansible_os_family == "Debian"
+  become: true
+  apt:
+    deb: https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb
 
-# - name: Install a ripgrep for Debian
-#   become: true
-#   apt:
-#     deb: https://github.com/BurntSushi/ripgrep/releases/download/0.9.0/ripgrep_0.9.0_amd64.deb
-#   when: ripgrep_is_installed.rc != 0 and ansible_os_family == "Debian"
+- name: "nvm install"
+  git:
+    repo: "{{ item.repo }}"
+    version: "{{ item.version | default('master') }}"
+    dest: "{{ ansible_env.HOME }}/.nvm"
+    depth: "1"
+  with_items:
+    - repo: https://github.com/nvm-sh/nvm.git
+
+- name: "tfenv install"
+  git:
+    repo: "{{ item.repo }}"
+    version: "{{ item.version | default('master') }}"
+    dest: "{{ ansible_env.HOME }}/.tfenv"
+    depth: "1"
+  with_items:
+    - repo: https://github.com/tfutils/tfenv.git
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: ~/Downloads
+    state: directory
+
+- name: Download awscliv2
+  get_url:
+    url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+    dest: ~/Downloads/awscliv2.zip
+  register: awscli_download
+
+- name: Check aws cli installed
+  command: which aws
+  changed_when: false
+  failed_when: false
+  check_mode: no
+  register: is_awscli_exist
+
+- name: Install awscliv2
+  become: true
+  ansible.builtin.command:
+    chdir: "{{ ansible_env.HOME }}/Downloads"
+    argv:
+      - "bash"
+      - "-c"
+      - "unzip awscliv2.zip && aws/install"
+  when: is_awscli_exist.rc != 0
+
+- name: Update awscliv2
+  become: true
+  ansible.builtin.command:
+    chdir: "{{ ansible_env.HOME }}/Downloads"
+    argv:
+      - "bash"
+      - "-c"
+      - "unzip awscliv2.zip && aws/install --update"
+  when: is_awscli_exist.rc == 0 and awscli_download.changed
+
+- name: Download aws sam cli
+  get_url:
+    url: https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+    dest: ~/Downloads/aws-sam-cli-linux-x86_64.zip
+  register: awssamcli_download
+
+- name: Check aws sam cli installed
+  command: which sam
+  changed_when: false
+  failed_when: false
+  check_mode: no
+  register: is_awssamcli_exist
+
+- name: Install aws sam cli
+  become: true
+  ansible.builtin.command:
+    chdir: "{{ ansible_env.HOME }}/Downloads"
+    argv:
+      - "bash"
+      - "-c"
+      - "unzip aws-sam-cli-linux-x86_64.zip -d sam-installation && ./sam-installation/install"
+  when: is_awssamcli_exist.rc != 0
+
+- name: Update aws sam cli
+  become: true
+  ansible.builtin.command:
+    chdir: "{{ ansible_env.HOME }}/Downloads"
+    argv:
+      - "bash"
+      - "-c"
+      - "unzip aws-sam-cli-linux-x86_64.zip -d sam-installation && ./sam-installation/install --update"
+  when: is_awssamcli_exist.rc == 0 and awssamcli_download.changed

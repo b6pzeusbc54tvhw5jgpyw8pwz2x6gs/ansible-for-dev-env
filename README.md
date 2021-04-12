@@ -2,21 +2,35 @@
 Ansible playbook and guide for quickly provisioning personal work environment when setting up MacOS.
 
 ## Preparation
+Tested on Ansible 2.9.x, 2.10.x.
 
+### Install Ansible
+
+**For MacOS user:**
 ```shell
-# for MacOS
 $ brew install ansible python3
+```
 
-# for Ubuntu
+**For Ubuntu user:**
+
+```
+$ sudo apt install software-properties-common
+$ sudo apt-add-repository --yes --update ppa:ansible/ansible
 $ sudo apt install ansible python3
+```
 
-# Install dependency
+Reference: https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-ubuntu
+
+### Install dependency
+In this repo's root directory,
+
+```
 $ ansible-galaxy install --roles-path=.galaxy_roles viasite-ansible.zsh
 ```
 
 ### Connection
 If you encounter a connection error on first run,
-- Check `Remote Login` in **System Preferences** -> **Sharing**
+- (Only MacOS) Check `Remote Login` in **System Preferences** -> **Sharing**
 - Add `ECDSA` key into your `~/.ssh/known_hosts` by type `yes` in below comamnd:
 
 ```shell
@@ -26,10 +40,16 @@ ECDSA key fingerprint is SHA256:ifxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx0o.
 Are you sure you want to continue connecting (yes/no)?
 ```
 
-- Add current user's key into itself `~/.ssh/authorized_keys` file
+- Add current user's key into itself `~/.ssh/authorized_keys` file:
 ```
-$ ssh-keygen  # passphrase 입력 없이 Enter 연속 입력
 $ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+```
+
+If `No such file or directory` error occurs,
+first you need to generate SSH Key like this:
+```
+$ ssh-keygen
+## Then just input 'Enter' continuously without passphrase for your convenience.
 ```
 
 ### Extra variable
@@ -43,8 +63,14 @@ Confirm New Vault password: `<Temporary password>`
 
 Then, when the editor opens, write the following:
 ```
-# required variables:
+# password to run sudo.
+# If the current user can use sudo without a password, it can be omitted.
 ansible_become_pass: '<user-sudo-password>'
+
+# If "Incorrect su password" error occurs, try belows:
+ansible_become_method: su
+ansible_become_user: root
+ansible_become_pass: '<root-password>'
 
 # for Ubuntu
 ansible_python_interpreter: /usr/bin/python3  # this overwrite vars.yml's value
@@ -60,14 +86,14 @@ EXTRA_VAR_NO_SPECIAL_CHAR_IN_PROMPT: true  # default: false
 # for MacOS 10.15
 $ ansible-playbook site-macos-10.15.yml -v -u $USER --ask-vault-pass
 
-# for Ubuntu 16
-$ ansible-playbook site-ubuntu-16.yml -v -u $USER --ask-vault-pass
+# for Ubuntu 16 or 18
+$ ansible-playbook site-ubuntu-16-or-18.yml -v -u $USER --ask-vault-pass
 
 ## or you can excute only specific tagged task, using -t
 $ ansible-playbook <site-xxx.yml> -v -u $USER --ask-vault-pass -t git
 ```
 
-### Insecure directories and files 문제
+### (Only MacOS) Insecure directories and files 문제
 
 [insecure directories and files](https://github.com/zsh-users/zsh-completions/issues/433) 문제로
 **Reset antigen cache** task등에서 진행이 막혔을 때,
@@ -86,23 +112,48 @@ $ compaudit | xargs chmod g-w
 ```
 
 ## Manual settings
-`ansible-playbook` 이후 해야할 수동 작업 들:
+`ansible-playbook` 실행 후 해야 할 수동 작업 들:
 
-### Install Node
+### Install Node, Terraform, Docker and so on...
 
+
+**Install node:**
 ```
+$ nvm ls-remote --lts
 $ nvm install <node-version>
 $ nvm use <node-version>
 ```
 
-만약 `nvm` 명령어가 없다고 나오면 zsh 접속을 다시 해보자.
+**(Only Ubuntu) Install yarn:**
+```
+$ npm install --global yarn
+```
 
-### Preferences Keyboard setting
+**Install terraform:**
+```
+$ tfenv list-remote
+$ tfenv install <terraform-version>
+$ tfenv use <terraform-version>
+```
+
+> if Command not found error occurs,
+> close the shell(ssh) and try again after reconnecting.
+
+**(Only Ubuntu) Install Docker:**
+- https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script
+
+```
+$ curl -fsSL https://get.docker.com -o get-docker.sh
+$ sudo groupadd docker
+$ sudo usermod -aG docker $USER
+```
+
+### (Only MacOS) Preferences Keyboard setting
 - Preferences - Keyboard - Adjust `Key Repeat`, `Delay Until Repeat`
 - Preferences - Keyboard - Modifier Keys... - Caps Lock Key: `No Action`
 - Preferences - Keyboard - Text - uncheck: `Use smart quotes and dashes`
 
-### Keyboard maestro
+### (Only MacOS) Keyboard maestro
 
 매크로 설정 import:
 
@@ -112,14 +163,14 @@ $ open config-backup.kmmacros
 Keyboard maestro 를 설치후 위 커맨드로 import 후
 disable 된 매크로들을 enable 해줘야함
 
-### Snippets
+### (Only MacOS) Snippets
 https://www.alfredapp.com/
 
-### iTerm color scheme
+### (Only MacOS) iTerm color scheme
 - https://iterm2colorschemes.com/
 - recommend: NightLion v2, Tango Dark
 
-### VS Code, IntelliJ 등에서 key press and hold 안되는 문제
+### (Only MacOS) VS Code, IntelliJ 등에서 key press and hold 안되는 문제
 
 ```
 $ defaults write -g ApplePressAndHoldEnabled -bool false
@@ -127,7 +178,7 @@ $ defaults write -g ApplePressAndHoldEnabled -bool false
 
 - https://stackoverflow.com/a/44010683
 
-### macOS Sierra(Mojave)에서 원화(₩) 대신 백 쿼트(`) 입력하기
+### (Only MacOS) macOS Sierra(Mojave)에서 원화(₩) 대신 백 쿼트(`) 입력하기
 
 - TODO: Catalina에서 동작 확인 필요
 
@@ -148,13 +199,13 @@ EOF
 echo "Done."
 ```
 
+**참고:**
+- 구름 입력기 사용자는 환경설정에서 `한글 입력기일 때 역따옴표로 원화 기호 입력` 을 체크 해제로 같은 효과
+
 ### References
 - https://ani2life.com/wp/?p=1753
 - https://gist.github.com/redism/43bc51cab62269fa97a220a7bb5e1103
 - https://docs.ansible.com/ansible/latest/user_guide/playbooks_vault.html#running-a-playbook-with-vault
-
-**참고:**
-- 구름 입력기 사용자는 환경설정에서 `한글 입력기일 때 역따옴표로 원화 기호 입력` 을 체크 해제로 같은 효과
 
 [keyboardmaestro]: https://www.keyboardmaestro.com/main/
 [karabiner]: https://pqrs.org/osx/karabiner/
