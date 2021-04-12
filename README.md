@@ -67,6 +67,11 @@ Then, when the editor opens, write the following:
 # If the current user can use sudo without a password, it can be omitted.
 ansible_become_pass: '<user-sudo-password>'
 
+# If "Incorrect su password" error occurs, try belows:
+ansible_become_method: su
+ansible_become_user: root
+ansible_become_pass: '<root-password>'
+
 # for Ubuntu
 ansible_python_interpreter: /usr/bin/python3  # this overwrite vars.yml's value
 
