@@ -64,11 +64,12 @@
     dest: ~/Downloads/awscliv2.zip
   register: awscli_download
 
-- name: Check is awscli installed
-  shell: command -v aws >/dev/null 2>&1
-  register: is_awscli_exist
+- name: Check aws cli installed
+  command: which aws
   changed_when: false
-  ignore_errors: yes
+  failed_when: false
+  check_mode: no
+  register: is_awscli_exist
 
 - name: Install awscliv2
   become: true
@@ -78,8 +79,8 @@
       - "bash"
       - "-c"
       - "unzip awscliv2.zip && aws/install"
-  when: awscli_download.changed or is_awscli_exist.rc == 127
-  
+  when: is_awscli_exist.rc != 0
+
 - name: Update awscliv2
   become: true
   ansible.builtin.command:
@@ -88,7 +89,7 @@
       - "bash"
       - "-c"
       - "unzip awscliv2.zip && aws/install --update"
-  when: awscli_download.changed and is_awscli_exist.rc == 0
+  when: is_awscli_exist.rc == 0 and awscli_download.changed
 
 - name: Download aws sam cli
   get_url:
@@ -96,11 +97,12 @@
     dest: ~/Downloads/aws-sam-cli-linux-x86_64.zip
   register: awssamcli_download
 
-- name: Check is aws sam cli installed
-  shell: command -v sam >/dev/null 2>&1
-  register: is_awssamcli_exist
+- name: Check aws sam cli installed
+  command: which sam
   changed_when: false
-  ignore_errors: yes
+  failed_when: false
+  check_mode: no
+  register: is_awssamcli_exist
 
 - name: Install aws sam cli
   become: true
@@ -110,7 +112,7 @@
       - "bash"
       - "-c"
       - "unzip aws-sam-cli-linux-x86_64.zip -d sam-installation && ./sam-installation/install"
-  when: awssamcli_download.changed or is_awssamcli_exist.rc == 127
+  when: is_awssamcli_exist.rc != 0
 
 - name: Update aws sam cli
   become: true
@@ -120,4 +122,4 @@
       - "bash"
       - "-c"
       - "unzip aws-sam-cli-linux-x86_64.zip -d sam-installation && ./sam-installation/install --update"
-  when: awssamcli_download.changed and is_awssamcli_exist.rc == 0
+  when: is_awssamcli_exist.rc == 0 and awssamcli_download.changed
