@@ -144,7 +144,7 @@ $ tfenv use <terraform-version>
 
 ```
 $ curl -fsSL https://get.docker.com -o get-docker.sh
-$ sudo groupadd docker
+$ sudo sh get-docker.sh
 $ sudo usermod -aG docker $USER
 ```
 
