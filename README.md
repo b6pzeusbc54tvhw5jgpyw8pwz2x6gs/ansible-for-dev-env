@@ -141,6 +141,7 @@ $ tfenv use <terraform-version>
 
 **(Only Ubuntu) Install Docker:**
 - https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script
+- This guide is Tested in Ubuntu 18.04
 
 ```
 $ curl -fsSL https://get.docker.com/ | sudo sh -
