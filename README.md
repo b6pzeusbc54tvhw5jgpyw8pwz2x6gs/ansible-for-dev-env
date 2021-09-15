@@ -141,12 +141,80 @@ $ tfenv use <terraform-version>
 
 **(Only Ubuntu) Install Docker:**
 - https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script
+- This guide is Tested in Ubuntu 18.04
 
 ```
-$ curl -fsSL https://get.docker.com -o get-docker.sh
-$ sudo sh get-docker.sh
-$ sudo usermod -aG docker $USER
+$ curl -fsSL https://get.docker.com/ | sudo sh -
+
+$ sudo groupadd docker
+$ sudo usermod -aG docker <userid>
+$ newgrp docker
 ```
+
+if you are using Proxy network,
+```
+$ sudo mkdir -p /etc/systemd/system/docker.service.d
+$ sudo vi /etc/systemd/system/docker.service.d/http-proxy.conf
+```
+
+Edit http-proxy.conf like below:
+```
+[Service]
+Environment="HTTP_PROXY=http://your.proxy.server:8080"
+Environment="HTTPS_PROXY=http://your.proxy.server:8080"
+Environment="NO_PROXY=localhost,.company.internal.net"
+```
+
+Restart docker:
+```
+$ sudo systemctl daemon-reload
+$ sudo systemctl restart docker
+```
+
+Check installation:
+```
+$ docker info
+Client:
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  app: Docker App (Docker Inc., v0.9.1-beta3)
+  buildx: Build with BuildKit (Docker Inc., v0.5.1-docker)
+
+Server:
+ Containers: 18
+  Running: 4
+  Paused: 0
+  Stopped: 14
+ Images: 42
+ Server Version: 20.10.6
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Native Overlay Diff: true
+...
+```
+
+If permission error occur, below might resolve the problem.
+```
+$ sudo chmod 660 /var/run/docker.sock
+```
+
+Hello world:
+```
+$ docker login   # by username/password in https://hub.docker.com
+$ docker run hello-world
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+b8dfde127a29: Pull complete 
+Digest: sha256:9f6ad537c5132bcce57f7a0a20e317228d382c3cd61edae14650eec68b2b345c
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+...
+```
+
 
 ### (Only MacOS) Preferences Keyboard setting
 - Preferences - Keyboard - Adjust `Key Repeat`, `Delay Until Repeat`
