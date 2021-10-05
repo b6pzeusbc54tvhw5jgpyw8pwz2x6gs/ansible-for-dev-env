@@ -89,6 +89,7 @@
     - repo: https://github.com/editorconfig/editorconfig-vim.git
     - repo: https://github.com/ntpeters/vim-better-whitespace.git
     - repo: https://github.com/cespare/vim-toml.git
+      version: main
 
 - name: register for managed plugins
   set_fact: "{{ item.name | default(item.repo.split('/')[-1][:-4]) }}"

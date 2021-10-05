@@ -19,16 +19,17 @@ alias zz='fasd_cd -d -i' # cd with interactive selection
 ####################################################################
 # etc
 
-PATH=$HOME/.tfenv/bin:$PATH
-PATH=/usr/local/opt/coreutils/bin:$PATH
-PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
-PATH=$(ruby -e 'print Gem.user_dir')/bin:$PATH
-PATH=/usr/local/bin:/usr/bin:/bin:/$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
+PATH="/usr/local/bin:/usr/bin:/bin:/$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH"
+PATH="$(brew --prefix)/bin:$(brew --prefix)/sbin:$PATH"
+PATH="$(brew --prefix)/opt/gnu-tar/libexec/gnubin:$PATH"
 PATH="/usr/local/opt/curl/bin:$PATH"
+PATH="$HOME/.tfenv/bin:$PATH"
+PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
 
-MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+MANPATH="$(brew --prefix)/opt/coreutils/libexec/gnuman:$MANPATH"
+MANPATH="$(brew --prefix)/opt/gnu-tar/libexec/gnuman:$MANPATH"
 
-eval "$(dircolors -b $HOME/.dircolors/LS_COLORS)"
+eval "$(gdircolors -b $HOME/.dircolors/LS_COLORS)"
 # BEGIN ANSIBLE MANAGED BLOCK FOR LS_ALIASES
 # END ANSIBLE MANAGED BLOCK FOR LS_ALIASES
 

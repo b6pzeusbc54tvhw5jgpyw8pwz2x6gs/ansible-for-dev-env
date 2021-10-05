@@ -21,9 +21,9 @@
     path: "~{{ ansible_user_id }}/.zshrc.local"
     mode: 0644
     content: |-
-      alias ls='/usr/local/bin/gls --color=auto'
-      alias l='/usr/local/bin/gls -CF --color=auto'
-      alias ll='/usr/local/bin/gls -alF --color=auto'
+      alias ls='$(brew --prefix)/bin/gls --color=auto'
+      alias l='$(brew --prefix)/bin/gls -CF --color=auto'
+      alias ll='$(brew --prefix)/bin/gls -alF --color=auto'
   when: ansible_os_family == 'Darwin' and zshrc_template.changed
 
 - name: insert ls aliases for Ubuntu
