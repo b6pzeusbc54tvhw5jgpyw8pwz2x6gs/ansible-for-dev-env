@@ -9,7 +9,8 @@
     # command 존재 여부로 zsh plugin 을 설치 하므로 나중에 수행해야 함
     - { role: role-zsh, tags: 'zsh' }
   environment:
-    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+    PATH: /usr/local/bin:/opt/homebrew/opt/gnu-tar/libexec/gnubin:/opt/homebrew/bin:{{ ansible_env.PATH }}
+
   vars_files:
     - ./vars.yml
     - ./vars-user.yml
