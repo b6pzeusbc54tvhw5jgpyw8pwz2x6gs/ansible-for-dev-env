@@ -2,7 +2,9 @@
 Ansible playbook and guide for quickly provisioning personal work environment when setting up MacOS.
 
 ## Preparation
-Tested on Ansible 2.9.x, 2.10.x.
+- Tested Ansible versions: 2.9.x, 2.10.x, 2.11.x
+- Tested macOS versions: 10.15, 11.6
+- Tested Ubuntu versions: 16.x, 18.x
 
 ### Install Ansible
 
@@ -84,7 +86,7 @@ EXTRA_VAR_NO_SPECIAL_CHAR_IN_PROMPT: true  # default: false
 
 ```sh
 # for MacOS 10.15
-$ ansible-playbook site-macos-10.15.yml -v -u $USER --ask-vault-pass
+$ ansible-playbook site-macos-10-and-11.yml -v -u $USER --ask-vault-pass
 
 # for Ubuntu 16 or 18
 $ ansible-playbook site-ubuntu-16-or-18.yml -v -u $USER --ask-vault-pass
@@ -206,7 +208,7 @@ $ docker login   # by username/password in https://hub.docker.com
 $ docker run hello-world
 Unable to find image 'hello-world:latest' locally
 latest: Pulling from library/hello-world
-b8dfde127a29: Pull complete 
+b8dfde127a29: Pull complete
 Digest: sha256:9f6ad537c5132bcce57f7a0a20e317228d382c3cd61edae14650eec68b2b345c
 Status: Downloaded newer image for hello-world:latest
 
