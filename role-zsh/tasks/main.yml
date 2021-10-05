@@ -59,3 +59,12 @@
     update: false
     dest: "~{{ ansible_user_id }}/.dircolors"
 
+- name: "nvm install"
+  git:
+    repo: "{{ item.repo }}"
+    version: "{{ item.version | default('master') }}"
+    dest: "{{ ansible_env.HOME }}/.nvm"
+    depth: "1"
+  with_items:
+    - repo: https://github.com/nvm-sh/nvm.git
+

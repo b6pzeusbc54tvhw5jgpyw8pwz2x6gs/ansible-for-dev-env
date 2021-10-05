@@ -86,7 +86,7 @@ EXTRA_VAR_NO_SPECIAL_CHAR_IN_PROMPT: true  # default: false
 
 ```sh
 # for MacOS 10.15
-$ ansible-playbook site-macos-10-and-11.yml -v -u $USER --ask-vault-pass
+$ ansible-playbook site-macos-10-or-11.yml -v -u $USER --ask-vault-pass
 
 # for Ubuntu 16 or 18
 $ ansible-playbook site-ubuntu-16-or-18.yml -v -u $USER --ask-vault-pass
