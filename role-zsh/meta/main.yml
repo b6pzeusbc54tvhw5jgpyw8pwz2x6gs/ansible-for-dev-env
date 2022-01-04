@@ -4,7 +4,7 @@ dependencies:
     become: "{{ 'yes' if ansible_os_family == 'Debian' else 'no' }}"
     vars:
       zsh_load_etc_profile: no
-      zsh_fzf_version: 0.23.1
+      zsh_fzf_version: 0.29.0
       zsh_autosuggestions_bind_key: "^ "
       zsh_antigen_theme: robbyrussell
       zsh_antigen_bundles_extras:
@@ -34,5 +34,4 @@ dependencies:
         - urbainvaes/fzf-marks # replaces jump plugin, mark, jump and Ctrl+G
         - "{{ fzf_widgets }}"
         # must be last, don't work on zsh < 4.3.17
-        #- { name: zsh-users/zsh-syntax-highlighting, when: "{{ zsh_version | default(false) is version('4.3.17', '>=') }}" }
-        - { name: zdharma/fast-syntax-highlighting, when: "{{ zsh_version | default(false) is version('4.3.17', '>=') }}" }
+        - { name: zdharma-continuum/fast-syntax-highlighting, when: "{{ zsh_version | default(false) is version('4.3.17', '>=') }}" }
