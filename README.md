@@ -230,7 +230,7 @@ $ plutil -convert xml1 ~/Library/Preferences/com.apple.symbolichotkeys.plist
 
 ```xml
 ...
-        <key>61</key>
+        <key>61</key>              <!-- 여기 key: 61 을 찾아서, -->
         <dict>
             <key>enabled</key>
             <true/>
@@ -240,7 +240,7 @@ $ plutil -convert xml1 ~/Library/Preferences/com.apple.symbolichotkeys.plist
                 <array>
                     <integer>32</integer>
                     <integer>49</integer>
-                    <integer>8519680</integer>  <!-- 여기 8519680 를 131072로 변경 -->
+                    <integer>8519680</integer>  <!-- 3번째 integer 값을 131072로 변경 -->
                 </array>
                 <key>type</key>
                 <string>standard</string>
