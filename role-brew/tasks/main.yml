@@ -30,6 +30,22 @@
 - homebrew_tap:
     name: aws/tap
 
+- name: (without sudo password) brew install --cask google-chrome firefox
+  community.general.homebrew_cask:
+    name:
+      - google-chrome
+      - firefox
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask visual-studio-code intellij-idea-ce
+  community.general.homebrew_cask:
+    name:
+      - visual-studio-code
+      - intellij-idea-ce
+    greedy: yes
+    state: present
+
 - name: (without sudo password) brew install vim
   community.general.homebrew:
     name:
@@ -110,22 +126,6 @@
     name:
       - alfred
       - hammerspoon
-    greedy: yes
-    state: present
-
-- name: (without sudo password) brew install --cask google-chrome firefox
-  community.general.homebrew_cask:
-    name:
-      - google-chrome
-      - firefox
-    greedy: yes
-    state: present
-
-- name: (without sudo password) brew install --cask visual-studio-code intellij-idea-ce
-  community.general.homebrew_cask:
-    name:
-      - visual-studio-code
-      - intellij-idea-ce
     greedy: yes
     state: present
 
