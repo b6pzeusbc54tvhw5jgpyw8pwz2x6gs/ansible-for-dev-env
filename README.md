@@ -223,10 +223,10 @@ This message shows that your installation appears to be working correctly.
 1. plist 파일을 xml 형식으로 변경
 
 ```bash
-$ plutil -convert xml1 /Library/Preferences/com.apple.symbolichotkeys.plist
+$ plutil -convert xml1 ~/Library/Preferences/com.apple.symbolichotkeys.plist
 ```
 
-2. `/Library/Preferences/com.apple.symbolichotkeys.plist` xml 문서를 수정
+2. `~/Library/Preferences/com.apple.symbolichotkeys.plist` xml 문서를 수정
 
 ```xml
 ...
@@ -250,7 +250,7 @@ $ plutil -convert xml1 /Library/Preferences/com.apple.symbolichotkeys.plist
 3. 다시 원래의 plist binary 형태로 변환
 
 ```bash
-$ plutil -convert binary1 /Library/Preferences/com.apple.symbolichotkeys.plist
+$ plutil -convert binary1 ~/Library/Preferences/com.apple.symbolichotkeys.plist
 ```
 
 4. macOS reboot
