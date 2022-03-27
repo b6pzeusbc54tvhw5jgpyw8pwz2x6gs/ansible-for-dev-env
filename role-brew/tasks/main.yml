@@ -30,49 +30,127 @@
 - homebrew_tap:
     name: aws/tap
 
-- name: Install brew apps Using without sudo password
+- name: (without sudo password) brew install --cask google-chrome firefox
+  community.general.homebrew_cask:
+    name:
+      - google-chrome
+      - firefox
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask visual-studio-code intellij-idea-ce
+  community.general.homebrew_cask:
+    name:
+      - visual-studio-code
+      - intellij-idea-ce
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install vim
   community.general.homebrew:
     name:
       - vim
+    state: present
+
+- name: (without sudo password) brew install ripgrep the_silver_searcher
+  community.general.homebrew:
+    name:
       - ripgrep
+      - the_silver_searcher
+    state: present
+
+- name: (without sudo password) brew install jq direnv fasd
+  community.general.homebrew:
+    name:
       - jq
       - direnv
-      - thefuck
-      - the_silver_searcher
       - fasd
+    state: present
+
+- name: (without sudo password) brew install thefuck tree coreutils curl fzf
+  community.general.homebrew:
+    name:
+      - thefuck
       - tree
       - coreutils
       - curl
       - fzf
+    state: present
+
+- name: (without sudo password) brew install awscli aws-sam-cli
+  community.general.homebrew:
+    name:
       - awscli
       - aws-sam-cli
     state: present
 
-- name: Install brew cask apps Using without sudo password
+- name: (without sudo password) brew install --cask iterm2
   community.general.homebrew_cask:
     name:
       - iterm2
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask slack notion zoom
+  community.general.homebrew_cask:
+    name:
       - slack
-      - bettertouchtool
       - notion
+      - zoom
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask bettertouchtool
+  community.general.homebrew_cask:
+    name:
+      - bettertouchtool
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask obs
+  community.general.homebrew_cask:
+    name:
       - obs
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask docker
+  community.general.homebrew_cask:
+    name:
       - docker
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask alfred hammerspoon
+  community.general.homebrew_cask:
+    name:
       - alfred
       - hammerspoon
-      - firefox
-      - intellij-idea-ce
-      - google-chrome
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask synergy
+  community.general.homebrew_cask:
+    name:
       - synergy
-      - visual-studio-code
-      - intellij-idea-ce
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask send-anywhere
+  community.general.homebrew_cask:
+    name:
       - send-anywhere
-      # 다운을 못받는 네트워크 환경이 있다.
-      # 필요하면 주석치고 넘어 간 후 network 변경해서 주석풀고 처리
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask keyboard-maestro
+  community.general.homebrew_cask:
+    name:
       - keyboard-maestro
     greedy: yes
     state: present
 
-- name: Install apps Using sudo password for installing cask
+- name: (with sudo password) brew install --cask karabiner-elements gureumkim
   community.general.homebrew_cask:
     name:
       - karabiner-elements

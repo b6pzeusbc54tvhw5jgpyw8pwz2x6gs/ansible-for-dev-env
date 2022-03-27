@@ -272,6 +272,9 @@ echo "Done."
 **참고:**
 - 구름 입력기 사용자는 환경설정에서 `한글 입력기일 때 역따옴표로 원화 기호 입력` 을 체크 해제로 같은 효과
 
+### Font 설치
+- https://github.com/naver/d2codingfont/releases
+
 ### References
 - https://ani2life.com/wp/?p=1753
 - https://gist.github.com/redism/43bc51cab62269fa97a220a7bb5e1103
