@@ -220,13 +220,18 @@ This message shows that your installation appears to be working correctly.
 ### (Only MacOS) Monterey에서 shift+space 로 한/영 전환 안되는 문제
 - References: https://andrewpage.tistory.com/95
 
-1. plist 파일을 xml 형식으로 변경
+1. 만일의 사태를 대비해 plist 파일을 백업
+```
+$ cp ~/Library/Preferences/com.apple.symbolichotkeys.plist ~/Library/Preferences/com.apple.symbolichotkeys.plist.backup
+```
+
+2. plist 파일을 xml 형식으로 변경
 
 ```bash
 $ plutil -convert xml1 ~/Library/Preferences/com.apple.symbolichotkeys.plist
 ```
 
-2. `~/Library/Preferences/com.apple.symbolichotkeys.plist` xml 문서를 수정
+3. `~/Library/Preferences/com.apple.symbolichotkeys.plist` xml 문서를 수정
 
 ```xml
 ...
@@ -247,13 +252,13 @@ $ plutil -convert xml1 ~/Library/Preferences/com.apple.symbolichotkeys.plist
 ...
 ```
               
-3. 다시 원래의 plist binary 형태로 변환
+4. 다시 원래의 plist binary 형태로 변환
 
 ```bash
 $ plutil -convert binary1 ~/Library/Preferences/com.apple.symbolichotkeys.plist
 ```
 
-4. macOS reboot
+5. macOS reboot
 
 ### (Only MacOS) Preferences Keyboard setting
 - Preferences - Keyboard - Adjust `Key Repeat`, `Delay Until Repeat`
