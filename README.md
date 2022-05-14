@@ -2,15 +2,18 @@
 Ansible playbook and guide for quickly provisioning personal work environment when setting up MacOS.
 
 ## Preparation
-- Tested Ansible versions: 2.9.x, 2.10.x, 2.11.x
-- Tested macOS versions: 10.15, 11.6
-- Tested Ubuntu versions: 16.x, 18.x
+- Ansible versions: 2.12.x
+- macOS versions: 11.6, 12.3
+- Ubuntu versions: 16.x, 18.x
 
 ### Install Ansible
 
 **For MacOS user:**
 ```shell
-$ brew install ansible python3
+$ brew install ansible
+
+# If python3 is not installed yet,
+# brew install python3
 ```
 
 **For Ubuntu user:**
