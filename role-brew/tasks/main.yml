@@ -149,13 +149,6 @@
     greedy: yes
     state: present
 
-- name: (without sudo password) brew install --cask synergy
-  community.general.homebrew_cask:
-    name:
-      - synergy
-    greedy: yes
-    state: present
-
 - name: (without sudo password) brew install --cask send-anywhere
   community.general.homebrew_cask:
     name:
