@@ -48,11 +48,12 @@
     greedy: yes
     state: present
 
-- name: (with sudo password) brew install --cask karabiner-elements gureumkim
+- name: (with sudo password) brew install --cask karabiner-elements gureumkim zoom
   community.general.homebrew_cask:
     name:
       - karabiner-elements
       - gureumkim
+      - zoom
     greedy: yes
     state: present
     sudo_password: "{{ ansible_become_pass }}"
@@ -61,20 +62,6 @@
   community.general.homebrew_cask:
     name:
       - visual-studio-code
-    greedy: yes
-    state: present
-
-- name: (without sudo password) brew install --cask firefox
-  community.general.homebrew_cask:
-    name:
-      - firefox
-    greedy: yes
-    state: present
-
-- name: (without sudo password) brew install --cask intellij-idea-ce
-  community.general.homebrew_cask:
-    name:
-      - intellij-idea-ce
     greedy: yes
     state: present
 
@@ -108,6 +95,14 @@
       - fzf
     state: present
 
+- name: (without sudo password) brew install --cask slack dropbox
+  community.general.homebrew_cask:
+    name:
+      - slack
+      - dropbox
+    greedy: yes
+    state: present
+
 - homebrew_tap:
     name: aws/tap
 
@@ -118,12 +113,10 @@
       - aws-sam-cli
     state: present
 
-- name: (without sudo password) brew install --cask slack notion zoom
+- name: (without sudo password) brew install --cask notion
   community.general.homebrew_cask:
     name:
-      - slack
       - notion
-      - zoom
     greedy: yes
     state: present
 
@@ -156,3 +149,16 @@
     greedy: yes
     state: present
 
+- name: (without sudo password) brew install --cask intellij-idea-ce
+  community.general.homebrew_cask:
+    name:
+      - intellij-idea-ce
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask firefox
+  community.general.homebrew_cask:
+    name:
+      - firefox
+    greedy: yes
+    state: present
