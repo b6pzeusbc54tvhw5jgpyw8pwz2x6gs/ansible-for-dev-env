@@ -27,21 +27,53 @@
     dest: ~/.config/karabiner/karabiner.json
     mode: 0644
 
-- homebrew_tap:
-    name: aws/tap
-
-- name: (without sudo password) brew install --cask google-chrome firefox
+- name: (without sudo password) brew install --cask iterm2
   community.general.homebrew_cask:
     name:
-      - google-chrome
+      - iterm2
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask bettertouchtool
+  community.general.homebrew_cask:
+    name:
+      - bettertouchtool
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask keyboard-maestro
+  community.general.homebrew_cask:
+    name:
+      - keyboard-maestro
+    greedy: yes
+    state: present
+
+- name: (with sudo password) brew install --cask karabiner-elements gureumkim
+  community.general.homebrew_cask:
+    name:
+      - karabiner-elements
+      - gureumkim
+    greedy: yes
+    state: present
+    sudo_password: "{{ ansible_become_pass }}"
+
+- name: (without sudo password) brew install --cask visual-studio-code
+  community.general.homebrew_cask:
+    name:
+      - visual-studio-code
+    greedy: yes
+    state: present
+
+- name: (without sudo password) brew install --cask firefox
+  community.general.homebrew_cask:
+    name:
       - firefox
     greedy: yes
     state: present
 
-- name: (without sudo password) brew install --cask visual-studio-code intellij-idea-ce
+- name: (without sudo password) brew install --cask intellij-idea-ce
   community.general.homebrew_cask:
     name:
-      - visual-studio-code
       - intellij-idea-ce
     greedy: yes
     state: present
@@ -52,11 +84,10 @@
       - vim
     state: present
 
-- name: (without sudo password) brew install ripgrep the_silver_searcher
+- name: (without sudo password) brew install ripgrep
   community.general.homebrew:
     name:
       - ripgrep
-      - the_silver_searcher
     state: present
 
 - name: (without sudo password) brew install jq direnv fasd
@@ -77,18 +108,14 @@
       - fzf
     state: present
 
+- homebrew_tap:
+    name: aws/tap
+
 - name: (without sudo password) brew install awscli aws-sam-cli
   community.general.homebrew:
     name:
       - awscli
       - aws-sam-cli
-    state: present
-
-- name: (without sudo password) brew install --cask iterm2
-  community.general.homebrew_cask:
-    name:
-      - iterm2
-    greedy: yes
     state: present
 
 - name: (without sudo password) brew install --cask slack notion zoom
@@ -97,13 +124,6 @@
       - slack
       - notion
       - zoom
-    greedy: yes
-    state: present
-
-- name: (without sudo password) brew install --cask bettertouchtool
-  community.general.homebrew_cask:
-    name:
-      - bettertouchtool
     greedy: yes
     state: present
 
@@ -143,18 +163,3 @@
     greedy: yes
     state: present
 
-- name: (without sudo password) brew install --cask keyboard-maestro
-  community.general.homebrew_cask:
-    name:
-      - keyboard-maestro
-    greedy: yes
-    state: present
-
-- name: (with sudo password) brew install --cask karabiner-elements gureumkim
-  community.general.homebrew_cask:
-    name:
-      - karabiner-elements
-      - gureumkim
-    greedy: yes
-    state: present
-    sudo_password: "{{ ansible_become_pass }}"
