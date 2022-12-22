@@ -2,15 +2,18 @@
 Ansible playbook and guide for quickly provisioning personal work environment when setting up MacOS.
 
 ## Preparation
-- Tested Ansible versions: 2.9.x, 2.10.x, 2.11.x
-- Tested macOS versions: 10.15, 11.6
-- Tested Ubuntu versions: 16.x, 18.x
+- Ansible versions: 2.12.x
+- macOS versions: 11.6, 12.3
+- Ubuntu versions: 16.x, 18.x
 
 ### Install Ansible
 
 **For MacOS user:**
 ```shell
-$ brew install ansible python3
+$ brew install ansible
+
+# If python3 is not installed yet,
+# brew install python3
 ```
 
 **For Ubuntu user:**
@@ -251,7 +254,7 @@ $ plutil -convert xml1 ~/Library/Preferences/com.apple.symbolichotkeys.plist
                 <string>standard</string>
 ...
 ```
-              
+
 4. 다시 원래의 plist binary 형태로 변환
 
 ```bash
@@ -266,17 +269,15 @@ $ plutil -convert binary1 ~/Library/Preferences/com.apple.symbolichotkeys.plist
 - Preferences - Keyboard - Text - uncheck: `Use smart quotes and dashes`
 
 ### (Only MacOS) Keyboard maestro
+매크로 설정 sync를 통해 기존 셋팅을 그대로 싱크:
 
-매크로 설정 import:
+- 처음 싱크를 시작하는 방법: File - Start Syncing Macros... - Create New... 이후 Dropbox 디렉토리를 선택하여 싱크 시작.
+- 기존 싱크 파일로 싱크 시작하는 방법: File - Start Syncing Macrots... - Open Existing... 이후 Dropbox 디렉토리의 싱크파일 선택.
 
-```shell
-$ open config-backup.kmmacros
-```
-Keyboard maestro 를 설치후 위 커맨드로 import 후
-disable 된 매크로들을 enable 해줘야함
-
-### (Only MacOS) Snippets
-https://www.alfredapp.com/
+### (Only MacOS) Alfred
+- https://www.alfredapp.com/
+- Advanced - Syncing - Set preferences folder... 에서 Dropbox를 사용하여
+  Alfred 설정을 싱크 *할수* 있음.
 
 ### (Only MacOS) iTerm color scheme
 - https://iterm2colorschemes.com/
@@ -316,6 +317,7 @@ echo "Done."
 
 ### Font 설치
 - https://github.com/naver/d2codingfont/releases
+- `D2Coding/D2Coding-Ver1.3.2-20180524`, `D2Coding/D2CodingBold-Ver1.3.2-20180524` 파일 2개만 설치하는 것을 추천
 
 ### References
 - https://ani2life.com/wp/?p=1753
@@ -324,4 +326,3 @@ echo "Done."
 
 [keyboardmaestro]: https://www.keyboardmaestro.com/main/
 [karabiner]: https://pqrs.org/osx/karabiner/
-
