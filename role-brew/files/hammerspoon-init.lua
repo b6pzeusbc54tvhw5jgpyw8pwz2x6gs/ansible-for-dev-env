@@ -30,17 +30,16 @@ vimSwitchMode = hs.hotkey.bind({'control'}, 'c', function()
 --   print(title)
 --   print( input_source )
 
---   hs.eventtap.keyStroke({}, 'right')
-    hs.eventtap.keyStroke({}, 'escape')
+    -- hs.eventtap.keyStroke({}, 'right')
+    -- hs.eventtap.keyStroke({}, 'escape')
     if (input_source ~= inputABC and has_value(supportTitleArr,title)) then
         -- print("switch english!")
         hs.keycodes.currentSourceID(inputABC)
-    -- else
-    --     print("notthing")
-    --     vimSwitchMode:disable()
-    --     hs.eventtap.keyStroke({'control'}, 'c')
-    --     vimSwitchMode:enable()
-  end
+    end
+
+    vimSwitchMode:disable()
+    hs.eventtap.keyStroke({'control'}, 'c')
+    vimSwitchMode:enable()
 end)
 
 -- https://johngrib.github.io/blog/2017/08/07/hammerspoon-tutorial-05/
